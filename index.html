@@ -1,0 +1,2762 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Final Revision · AI Exam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ==================== BASE TOKENS ==================== */
+:root[data-theme="dark"] {
+  --bg-0: #07080c;
+  --bg-1: #0d1016;
+  --bg-2: #151922;
+  --bg-3: #1d222d;
+  --line: #2a303c;
+  --line-soft: rgba(255,255,255,0.06);
+  --ink-1: #f3f5fa;
+  --ink-2: #b6bdc9;
+  --ink-3: #7a818d;
+  --good: #6ee7a3;
+  --bad: #ff7a8a;
+  --grid: rgba(255,255,255,0.022);
+}
+:root[data-theme="light"] {
+  --bg-0: #f5f1e6;
+  --bg-1: #fbf8f0;
+  --bg-2: #ffffff;
+  --bg-3: #efe8d6;
+  --line: #e0d8c2;
+  --line-soft: rgba(0,0,0,0.05);
+  --ink-1: #14181f;
+  --ink-2: #4a525e;
+  --ink-3: #828a96;
+  --good: #1f9d56;
+  --bad: #d23a4f;
+  --grid: rgba(20,24,31,0.035);
+}
+
+/* Chapter accent themes (applied per section) */
+.theme-c1 { --acc: #6ee7ff; --acc-2: #c89bff; }
+.theme-c2 { --acc: #ff9ed8; --acc-2: #ff6b9d; }
+.theme-c3 { --acc: #ffb86b; --acc-2: #ff7a5c; }
+.theme-c4 { --acc: #9eff8c; --acc-2: #6ee7a3; }
+.theme-def { --acc: #6ee7ff; --acc-2: #ffb86b; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background: var(--bg-0);
+  color: var(--ink-1);
+  line-height: 1.65;
+  overflow-x: hidden;
+  transition: background .4s, color .4s;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+::selection { background: #6ee7ff; color: #000; }
+
+/* ==================== NAV ==================== */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: color-mix(in srgb, var(--bg-0) 78%, transparent);
+  border-bottom: 1px solid var(--line-soft);
+}
+.nav-inner {
+  max-width: 1320px; margin: 0 auto;
+  padding: 14px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px;
+}
+.brand {
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Fraunces', serif;
+  font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em;
+}
+.brand-mark {
+  width: 34px; height: 34px;
+  border-radius: 11px;
+  background: conic-gradient(from 0deg, #6ee7ff, #c89bff, #ffb86b, #6ee7a3, #6ee7ff);
+  position: relative;
+}
+.brand-mark::after {
+  content: ''; position: absolute; inset: 3px;
+  background: var(--bg-0); border-radius: 8px;
+}
+.brand-mark::before {
+  content: 'FR'; position: absolute; inset: 0;
+  display: grid; place-items: center;
+  color: var(--ink-1); font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  z-index: 1;
+}
+.nav-links {
+  display: flex; gap: 4px;
+  font-size: 0.86rem; font-weight: 500;
+}
+.nav-links a {
+  color: var(--ink-2); text-decoration: none;
+  padding: 8px 14px; border-radius: 8px;
+  transition: all .2s;
+}
+.nav-links a:hover { color: var(--ink-1); background: var(--bg-2); }
+.theme-toggle {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--ink-1);
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  display: flex; align-items: center; gap: 8px;
+  transition: all .2s;
+}
+.theme-toggle:hover { border-color: #6ee7ff; }
+@media (max-width: 720px) { .nav-links { display: none; } }
+
+/* ==================== HERO ==================== */
+.hero {
+  max-width: 1320px; margin: 0 auto;
+  padding: 100px 28px 60px;
+  position: relative;
+}
+.hero-top {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 36px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; color: var(--ink-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hero-top .blip {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #6ee7a3;
+  box-shadow: 0 0 0 0 #6ee7a3;
+  animation: blip 2s infinite;
+}
+@keyframes blip {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(110,231,163,0.6); }
+  50% { box-shadow: 0 0 0 10px transparent; }
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; gap: 40px; } }
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  margin-bottom: 28px;
+}
+.hero h1 span.upright {
+  font-style: normal;
+  font-family: 'Bricolage Grotesque', serif;
+  font-weight: 800;
+}
+.hero h1 .ink-1 { color: #6ee7ff; }
+.hero h1 .ink-2 { color: #ff9ed8; }
+.hero h1 .ink-3 { color: #ffb86b; }
+.hero h1 .ink-4 { color: #9eff8c; }
+.hero p.lede {
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  color: var(--ink-2);
+  max-width: 580px;
+  line-height: 1.5;
+}
+.hero-side {
+  display: grid; gap: 12px;
+}
+.hero-card {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: all .25s;
+}
+.hero-card:hover {
+  transform: translateX(6px);
+  border-color: var(--ink-1);
+}
+.hero-card .hc-l {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem; color: var(--ink-3);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+.hero-card .hc-t {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ink-1);
+}
+.hero-card .hc-r {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.3rem;
+  color: var(--ink-3);
+}
+
+/* ==================== SECTION SHARED ==================== */
+.section {
+  max-width: 1320px; margin: 0 auto;
+  padding: 100px 28px;
+  position: relative;
+}
+.section-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--acc, #6ee7ff);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 18px;
+}
+.section-tag::before {
+  content: ''; width: 28px; height: 1px;
+  background: var(--acc, #6ee7ff);
+}
+.section h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  margin-bottom: 24px;
+  max-width: 880px;
+}
+.section h2 em {
+  font-style: italic;
+  color: var(--acc, #6ee7ff);
+}
+.section .lede {
+  font-size: 1.05rem;
+  color: var(--ink-2);
+  max-width: 660px;
+  margin-bottom: 40px;
+}
+
+/* ==================== DEFINITIONS PAGE ==================== */
+#definitions { 
+  background: 
+    radial-gradient(ellipse at 20% 0%, color-mix(in srgb, #6ee7ff 7%, transparent), transparent 60%),
+    radial-gradient(ellipse at 80% 100%, color-mix(in srgb, #ffb86b 6%, transparent), transparent 60%);
+}
+.def-filters {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 32px;
+  padding: 6px;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  width: fit-content;
+  max-width: 100%;
+}
+.def-filter {
+  background: transparent; border: none;
+  font-family: inherit; font-size: 0.85rem; font-weight: 600;
+  color: var(--ink-2);
+  padding: 9px 16px; border-radius: 9px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  transition: all .2s;
+}
+.def-filter:hover { color: var(--ink-1); }
+.def-filter.active.f-all { background: var(--ink-1); color: var(--bg-0); }
+.def-filter.active.f-c1 { background: #6ee7ff; color: #000; }
+.def-filter.active.f-c2 { background: #ff9ed8; color: #000; }
+.def-filter.active.f-c3 { background: #ffb86b; color: #000; }
+.def-filter.active.f-c4 { background: #9eff8c; color: #000; }
+.def-filter .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.def-filter .dot.c1 { background: #6ee7ff; }
+.def-filter .dot.c2 { background: #ff9ed8; }
+.def-filter .dot.c3 { background: #ffb86b; }
+.def-filter .dot.c4 { background: #9eff8c; }
+.def-search {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--ink-1);
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 32px;
+}
+.def-search:focus { outline: none; border-color: #6ee7ff; }
+.def-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  margin-bottom: 20px;
+}
+.def-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.def-card {
+  perspective: 1200px;
+  height: 200px;
+  cursor: pointer;
+}
+.def-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  transition: transform .6s cubic-bezier(0.6, 0.05, 0.28, 0.91);
+  transform-style: preserve-3d;
+}
+.def-card.flipped .def-inner { transform: rotateY(180deg); }
+.def-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 18px;
+  padding: 22px;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.def-face.front {
+  background: var(--bg-1);
+}
+.def-face.back {
+  background: var(--bg-2);
+  transform: rotateY(180deg);
+}
+.def-card:hover .def-face.front {
+  border-color: var(--def-col, #6ee7ff);
+}
+.def-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--def-col, #6ee7ff);
+  display: flex; align-items: center; gap: 6px;
+}
+.def-tag .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--def-col, #6ee7ff);
+}
+.def-term {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink-1);
+}
+.def-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  display: flex; align-items: center; gap: 6px;
+}
+.def-desc {
+  font-size: 0.92rem;
+  color: var(--ink-1);
+  line-height: 1.55;
+  overflow-y: auto;
+  flex: 1;
+  margin-top: 8px;
+}
+.def-mnemonic {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--def-col, #6ee7ff);
+  border-top: 1px dashed var(--line);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+.def-card[data-chapter="1"] { --def-col: #6ee7ff; }
+.def-card[data-chapter="2"] { --def-col: #ff9ed8; }
+.def-card[data-chapter="3"] { --def-col: #ffb86b; }
+.def-card[data-chapter="4"] { --def-col: #9eff8c; }
+.def-card.hidden { display: none; }
+
+/* ==================== CHAPTER GENERIC ==================== */
+.chapter {
+  max-width: 1320px; margin: 0 auto;
+  padding: 100px 28px 80px;
+  position: relative;
+}
+.ch-mark {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--acc);
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+}
+.ch-hero {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 60px;
+  align-items: end;
+  padding-bottom: 50px;
+  margin-bottom: 50px;
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 900px) { .ch-hero { grid-template-columns: 1fr; gap: 30px; } }
+.ch-hero h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 900;
+  font-size: clamp(2.6rem, 6.5vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+.ch-hero h2 em {
+  font-style: italic;
+  color: var(--acc);
+}
+.ch-summary {
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.ch-summary .kw {
+  color: var(--ink-1);
+  font-weight: 600;
+}
+
+/* ==================== EDITORIAL BLOCKS ==================== */
+.pullquote {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--ink-1);
+  padding: 40px 0;
+  border-top: 1px solid var(--acc);
+  border-bottom: 1px solid var(--line);
+  margin: 50px 0;
+  position: relative;
+}
+.pullquote::before {
+  content: '"';
+  font-family: 'Fraunces', serif;
+  font-size: 5rem;
+  color: var(--acc);
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  line-height: 1;
+  opacity: 0.6;
+}
+.pullquote cite {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-style: normal;
+  font-size: 0.85rem;
+  color: var(--ink-3);
+  margin-top: 16px;
+}
+
+/* Numbered blocks */
+.numbered-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: flex-start;
+}
+.numbered-row .num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--acc);
+  line-height: 1;
+}
+.numbered-row h4 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.numbered-row p {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+
+/* Concept blocks (replaces grid of identical cards) */
+.concept-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 30px 0;
+}
+.concept {
+  padding: 28px;
+  border-right: 1px solid var(--line);
+  background: var(--bg-1);
+  transition: background .25s;
+  position: relative;
+  overflow: hidden;
+}
+.concept:last-child { border-right: none; }
+.concept:hover { background: var(--bg-2); }
+.concept:hover::after {
+  opacity: 1;
+}
+.concept::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--acc);
+  opacity: 0;
+  transition: opacity .25s;
+}
+.concept .ic {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--acc);
+  margin-bottom: 14px;
+  letter-spacing: 0.05em;
+}
+.concept h5 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  line-height: 1.15;
+}
+.concept p {
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+
+@media (max-width: 700px) {
+  .concept-strip { grid-template-columns: 1fr; }
+  .concept { border-right: none; border-bottom: 1px solid var(--line); }
+  .concept:last-child { border-bottom: none; }
+}
+
+/* Formula */
+.formula {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--acc);
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+  font-size: 0.96rem;
+  color: var(--ink-1);
+  overflow-x: auto;
+}
+.formula .lbl {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.74rem;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Tags */
+.tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--bg-3);
+  color: var(--ink-2);
+  margin-right: 4px;
+  margin-top: 4px;
+}
+.tag.hi { background: color-mix(in srgb, var(--acc) 20%, transparent); color: var(--acc); }
+
+/* ==================== CH 1 SPECIFIC: TIMELINE ==================== */
+.tl-wrap {
+  position: relative;
+  padding: 40px 0 20px;
+}
+.tl-line {
+  position: absolute; left: 0; right: 0; top: 70px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--acc) 10%, var(--acc-2) 50%, var(--acc) 90%, transparent);
+  opacity: 0.3;
+}
+.tl-row {
+  display: flex; gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+.tl-row::-webkit-scrollbar { height: 8px; }
+.tl-row::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+.tl-node {
+  flex: 0 0 220px;
+  position: relative;
+  padding-top: 50px;
+  cursor: pointer;
+}
+.tl-node::before {
+  content: '';
+  position: absolute;
+  top: 20px; left: 24px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--bg-0);
+  border: 2px solid var(--acc);
+  transition: all .25s;
+}
+.tl-node:hover::before {
+  background: var(--acc);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--acc) 20%, transparent);
+}
+.tl-node .yr {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--acc);
+  line-height: 1;
+}
+.tl-node .ev {
+  margin-top: 8px;
+  font-size: 0.92rem;
+  color: var(--ink-1);
+  font-weight: 500;
+  line-height: 1.3;
+}
+.tl-node .dt {
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+/* Search algorithm comparison cards */
+.algo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.algo {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  background: var(--bg-1);
+  position: relative;
+  overflow: hidden;
+}
+.algo .badge {
+  position: absolute; top: 16px; right: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: var(--bg-3);
+  color: var(--ink-2);
+}
+.algo .badge.informed { background: color-mix(in srgb, var(--acc) 24%, transparent); color: var(--acc); }
+.algo .badge.uninformed { background: color-mix(in srgb, var(--acc-2) 24%, transparent); color: var(--acc-2); }
+.algo h5 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.algo .sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  margin-bottom: 14px;
+}
+.algo p { font-size: 0.92rem; color: var(--ink-2); }
+
+/* ==================== CH 2: NEURON LAB ==================== */
+.neuron-lab {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 40px;
+  margin: 32px 0;
+  position: relative;
+  overflow: hidden;
+}
+.neuron-lab::before {
+  content: '';
+  position: absolute; top: -100px; right: -100px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--acc) 18%, transparent), transparent 60%);
+  pointer-events: none;
+}
+.neuron-lab svg { width: 100%; height: auto; max-height: 380px; }
+.lab-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.lab-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-bottom: 18px;
+  letter-spacing: -0.02em;
+}
+
+/* Two-column comparison */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 30px 0;
+}
+@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+.col {
+  padding: 32px;
+  background: var(--bg-1);
+}
+.col + .col {
+  background: var(--bg-2);
+  border-left: 1px solid var(--line);
+}
+@media (max-width: 700px) {
+  .col + .col { border-left: none; border-top: 1px solid var(--line); }
+}
+.col-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.col h4 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  letter-spacing: -0.025em;
+  margin-bottom: 18px;
+  color: var(--acc);
+}
+.col h4.alt { color: var(--acc-2); }
+.col dl dt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 16px;
+}
+.col dl dt:first-child { margin-top: 0; }
+.col dl dd {
+  font-size: 0.94rem;
+  color: var(--ink-1);
+  margin-top: 4px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex; gap: 4px;
+  background: var(--bg-2);
+  padding: 5px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  margin-bottom: 24px;
+  width: fit-content;
+  flex-wrap: wrap;
+}
+.tab {
+  background: transparent; border: none;
+  font-family: inherit; font-size: 0.88rem; font-weight: 600;
+  color: var(--ink-2);
+  padding: 8px 16px; border-radius: 8px;
+  cursor: pointer; transition: all .2s;
+}
+.tab.active { background: var(--acc); color: var(--bg-0); }
+.tab:hover:not(.active) { color: var(--ink-1); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; animation: slideIn .35s; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Learning rules cluster */
+.rules-cluster {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.rule-chip {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  transition: all .25s;
+  cursor: default;
+}
+.rule-chip:hover {
+  border-color: var(--acc);
+  transform: translateY(-3px);
+}
+.rule-chip .icon {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  color: var(--acc);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.rule-chip h5 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.rule-chip p {
+  font-size: 0.84rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+/* ==================== CH 3: FUZZY DEMO ==================== */
+.fuzzy-demo {
+  background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 36px;
+  margin: 32px 0;
+}
+.fuzzy-control {
+  display: grid; grid-template-columns: 1fr 1.2fr;
+  gap: 32px;
+  align-items: center;
+}
+@media (max-width: 768px) { .fuzzy-control { grid-template-columns: 1fr; } }
+.fuzzy-slider-wrap {
+  display: flex; flex-direction: column;
+  gap: 16px;
+}
+.fuzzy-value {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--acc);
+  letter-spacing: -0.03em;
+}
+.fuzzy-value .unit {
+  font-size: 1.4rem;
+  color: var(--ink-3);
+  margin-left: 4px;
+}
+.fuzzy-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--bg-3);
+  border-radius: 999px;
+  outline: none;
+}
+.fuzzy-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px; height: 22px;
+  background: var(--acc);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--acc) 25%, transparent);
+}
+.fuzzy-slider::-moz-range-thumb {
+  width: 22px; height: 22px;
+  background: var(--acc);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.fuzzy-bars {
+  display: grid; gap: 14px;
+}
+.fbar {
+  display: flex; align-items: center; gap: 14px;
+}
+.fbar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  width: 110px;
+  color: var(--ink-2);
+}
+.fbar-track {
+  flex: 1; height: 14px;
+  background: var(--bg-3);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+.fbar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width .25s ease, background .25s;
+}
+.fbar-fill.cold { background: linear-gradient(90deg, #6ee7ff, #5db8f5); }
+.fbar-fill.comf { background: linear-gradient(90deg, #9eff8c, #6ee7a3); }
+.fbar-fill.hot { background: linear-gradient(90deg, #ffb86b, #ff7a5c); }
+.fbar-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--ink-1);
+  width: 50px;
+  text-align: right;
+  font-weight: 600;
+}
+.fuzzy-out {
+  margin-top: 24px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.fuzzy-out .ol {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--ink-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.fuzzy-out .ov {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--ink-1);
+  letter-spacing: -0.02em;
+}
+.fuzzy-out .or {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.3rem;
+  color: var(--acc);
+  font-weight: 600;
+}
+
+/* Operations visual */
+.ops-trio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 28px 0;
+}
+@media (max-width: 760px) { .ops-trio { grid-template-columns: 1fr; } }
+.op-card {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+  text-align: center;
+}
+.op-card svg { width: 100%; height: 90px; margin-bottom: 14px; }
+.op-card .sym {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 2.4rem;
+  color: var(--acc);
+  line-height: 1;
+}
+.op-card h5 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  margin-top: 4px;
+}
+.op-card .f {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  background: var(--bg-3);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+/* Defuzzification list */
+.defuz-list {
+  display: grid; gap: 8px;
+  margin: 20px 0;
+}
+.defuz-row {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 18px;
+  padding: 16px 20px;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  align-items: center;
+  transition: all .2s;
+}
+.defuz-row:hover { border-color: var(--acc); transform: translateX(4px); }
+.defuz-row .n {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--acc);
+}
+.defuz-row h6 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+.defuz-row p { font-size: 0.88rem; color: var(--ink-2); }
+
+/* ==================== CH 4: OPTIMIZATION ==================== */
+.ga-cycle {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin: 30px 0;
+  position: relative;
+}
+@media (max-width: 800px) { .ga-cycle { grid-template-columns: 1fr 1fr; } }
+.ga-step {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 18px;
+  position: relative;
+  transition: all .25s;
+}
+.ga-step:hover { border-color: var(--acc); transform: translateY(-4px); }
+.ga-step .stp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--acc);
+  margin-bottom: 8px;
+}
+.ga-step h5 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+.ga-step p {
+  font-size: 0.84rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.swarm-vis {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px;
+  margin: 24px 0;
+}
+.swarm-vis svg { width: 100%; height: auto; max-height: 280px; }
+
+/* ==================== QUIZ ==================== */
+.quiz {
+  background: linear-gradient(140deg, var(--bg-1), var(--bg-2));
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 40px;
+  margin-top: 60px;
+  position: relative;
+  overflow: hidden;
+}
+.quiz::before {
+  content: '';
+  position: absolute; top: -100px; right: -50px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--acc-2) 18%, transparent), transparent 60%);
+  pointer-events: none;
+}
+.quiz-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 28px; flex-wrap: wrap; gap: 16px;
+  position: relative; z-index: 1;
+}
+.quiz-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.8rem;
+  letter-spacing: -0.02em;
+}
+.quiz-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  margin-top: 6px;
+  letter-spacing: 0.05em;
+}
+.quiz-progress {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--acc);
+  padding: 6px 12px;
+  background: color-mix(in srgb, var(--acc) 12%, transparent);
+  border-radius: 999px;
+}
+.quiz-q {
+  margin-bottom: 26px;
+  position: relative; z-index: 1;
+}
+.q-text {
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: var(--ink-1);
+  line-height: 1.4;
+}
+.q-num {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--acc);
+  font-size: 0.85rem;
+  margin-right: 10px;
+  font-style: normal;
+}
+.q-opts {
+  display: grid; gap: 8px;
+}
+.opt {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 18px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.96rem;
+  color: var(--ink-1);
+  transition: all .2s;
+  display: flex; align-items: center; gap: 14px;
+}
+.opt:hover:not(:disabled) {
+  border-color: var(--acc);
+  transform: translateX(4px);
+}
+.opt:disabled { cursor: default; }
+.opt-letter {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: var(--bg-3);
+  display: grid; place-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  color: var(--ink-2);
+  font-weight: 700;
+}
+.opt.correct {
+  background: color-mix(in srgb, var(--good) 18%, var(--bg-2));
+  border-color: var(--good);
+}
+.opt.correct .opt-letter { background: var(--good); color: var(--bg-0); }
+.opt.wrong {
+  background: color-mix(in srgb, var(--bad) 18%, var(--bg-2));
+  border-color: var(--bad);
+}
+.opt.wrong .opt-letter { background: var(--bad); color: var(--bg-0); }
+.feedback {
+  margin-top: 12px;
+  padding: 14px 18px;
+  background: var(--bg-2);
+  border-left: 3px solid var(--acc);
+  border-radius: 10px;
+  font-size: 0.92rem;
+  color: var(--ink-2);
+  display: none;
+}
+.feedback.show { display: block; animation: slideIn .3s; }
+.feedback strong { color: var(--ink-1); }
+.quiz-actions {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  margin-top: 28px;
+  position: relative; z-index: 1;
+}
+.btn {
+  background: var(--acc);
+  color: var(--bg-0);
+  border: none;
+  padding: 13px 24px;
+  border-radius: 11px;
+  font-family: inherit;
+  font-size: 0.92rem; font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn.secondary {
+  background: var(--bg-3);
+  color: var(--ink-1);
+  border: 1px solid var(--line);
+}
+.score {
+  display: none;
+  text-align: center;
+  padding: 36px 24px;
+  background: var(--bg-2);
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  margin-top: 24px;
+  position: relative; z-index: 1;
+}
+.score.show { display: block; animation: slideIn .4s; }
+.score-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--acc);
+  line-height: 1;
+}
+.score-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  margin-top: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.score-msg {
+  margin-top: 20px;
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  color: var(--ink-1);
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* ==================== FOOTER ==================== */
+.footer {
+  margin-top: 100px;
+  padding: 70px 28px 50px;
+  border-top: 1px solid var(--line);
+  background: var(--bg-1);
+  text-align: center;
+}
+.footer-inner { max-width: 1320px; margin: 0 auto; }
+.footer-brand {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  letter-spacing: -0.03em;
+  background: linear-gradient(120deg, #6ee7ff, #ff9ed8, #ffb86b, #9eff8c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  line-height: 1;
+}
+.footer p { color: var(--ink-3); font-size: 0.95rem; margin-top: 16px; }
+.footer .powered {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+.footer .powered span {
+  background: linear-gradient(120deg, #6ee7ff, #ff9ed8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+/* ==================== BG CANVAS ==================== */
+.bg-canvas {
+  position: fixed; inset: 0;
+  z-index: -1;
+  opacity: 0.4;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<canvas class="bg-canvas" id="bgCanvas"></canvas>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <span>Final Revision</span>
+    </div>
+    <div class="nav-links">
+      <a href="#definitions">Definitions</a>
+      <a href="#chapter-1">Ch. 1</a>
+      <a href="#chapter-2">Ch. 2</a>
+      <a href="#chapter-3">Ch. 3</a>
+      <a href="#chapter-4">Ch. 4</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle">
+      <span id="themeIcon">◐</span>
+      <span id="themeLabel">Light</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-top">
+    <span class="blip"></span>
+    <span>T minus one day · Final exam mode</span>
+  </div>
+  <div class="hero-grid">
+    <div>
+      <h1>
+        <span class="upright">The</span> <em class="ink-1">night</em><br/>
+        <span class="upright">before</span> <em class="ink-2">your</em><br/>
+        <em class="ink-3">AI</em> <em class="ink-4">final.</em>
+      </h1>
+      <p class="lede">Four chapters, fifty plus definitions, and four randomized quizzes. Built so you study the right things, not all the things.</p>
+    </div>
+    <div class="hero-side">
+      <a href="#definitions" class="hero-card">
+        <div>
+          <div class="hc-l">START HERE</div>
+          <div class="hc-t">All Definitions</div>
+        </div>
+        <div class="hc-r">→</div>
+      </a>
+      <a href="#chapter-1" class="hero-card">
+        <div>
+          <div class="hc-l">CHAPTER 01</div>
+          <div class="hc-t">Intro to AI</div>
+        </div>
+        <div class="hc-r">→</div>
+      </a>
+      <a href="#chapter-2" class="hero-card">
+        <div>
+          <div class="hc-l">CHAPTER 02</div>
+          <div class="hc-t">Neural Networks</div>
+        </div>
+        <div class="hc-r">→</div>
+      </a>
+      <a href="#chapter-3" class="hero-card">
+        <div>
+          <div class="hc-l">CHAPTER 03</div>
+          <div class="hc-t">Fuzzy Logic</div>
+        </div>
+        <div class="hc-r">→</div>
+      </a>
+      <a href="#chapter-4" class="hero-card">
+        <div>
+          <div class="hc-l">CHAPTER 04</div>
+          <div class="hc-t">Optimization</div>
+        </div>
+        <div class="hc-r">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEFINITIONS ============ -->
+<section class="section theme-def" id="definitions">
+  <div class="section-tag">VOCAB · FLIP TO REVEAL</div>
+  <h2>Every term, on <em>one card.</em></h2>
+  <p class="lede">Tap any card to flip it. Filter by chapter or search by keyword. Each card has a memory hook to help things stick.</p>
+
+  <input type="text" class="def-search" id="defSearch" placeholder="Search a term... (e.g. perceptron, fuzzy, BFS)"/>
+
+  <div class="def-filters" id="defFilters">
+    <button class="def-filter active f-all" data-filter="all">All</button>
+    <button class="def-filter f-c1" data-filter="1"><span class="dot c1"></span>Ch. 1</button>
+    <button class="def-filter f-c2" data-filter="2"><span class="dot c2"></span>Ch. 2</button>
+    <button class="def-filter f-c3" data-filter="3"><span class="dot c3"></span>Ch. 3</button>
+    <button class="def-filter f-c4" data-filter="4"><span class="dot c4"></span>Ch. 4</button>
+  </div>
+
+  <div class="def-meta" id="defMeta">Showing all terms · click any card to reveal the meaning</div>
+
+  <div class="def-grid" id="defGrid"></div>
+</section>
+
+<!-- ============ CHAPTER 1 ============ -->
+<section class="chapter theme-c1" id="chapter-1">
+  <div class="ch-mark">CHAPTER 01 / 04</div>
+  <div class="ch-hero">
+    <h2>Foundations of <em>artificial intelligence.</em></h2>
+    <div class="ch-summary">
+      A field that builds machines capable of <span class="kw">perception, learning, reasoning,</span> and <span class="kw">problem solving</span>. Born in 1956, transformed forever in 2022.
+    </div>
+  </div>
+
+  <!-- Four pillars -->
+  <div class="numbered-row">
+    <div class="num">01</div>
+    <div>
+      <h4>Perception</h4>
+      <p>Interpreting data from the world, whether through cameras, microphones, or sensors. Vision and speech are the classic examples.</p>
+    </div>
+  </div>
+  <div class="numbered-row">
+    <div class="num">02</div>
+    <div>
+      <h4>Learning</h4>
+      <p>Improving performance over time based on data. This is the engine behind every machine learning system.</p>
+    </div>
+  </div>
+  <div class="numbered-row">
+    <div class="num">03</div>
+    <div>
+      <h4>Reasoning</h4>
+      <p>Making decisions or solving problems using logical inference. Expert systems lean heavily on this.</p>
+    </div>
+  </div>
+  <div class="numbered-row">
+    <div class="num">04</div>
+    <div>
+      <h4>Problem Solving</h4>
+      <p>Navigating complex environments to reach a goal. Search algorithms are the toolkit.</p>
+    </div>
+  </div>
+
+  <div class="pullquote">
+    The capability of a computer program or machine to think or reason, encompassing computational technologies for perception, reasoning, learning, and natural language processing.
+    <cite>NIST, formal definition of AI</cite>
+  </div>
+
+  <!-- Subfields -->
+  <div class="section-tag">SUBFIELDS</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:24px;">The <em>family tree.</em></h2>
+  <div class="concept-strip">
+    <div class="concept">
+      <div class="ic">→ DATA</div>
+      <h5>Machine Learning</h5>
+      <p>Algorithms that learn from data and improve over time.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ LANGUAGE</div>
+      <h5>Natural Language Processing</h5>
+      <p>How machines understand and generate human language.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ PHYSICAL</div>
+      <h5>Robotics</h5>
+      <p>AI systems that interact with the physical world.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ DECISIONS</div>
+      <h5>Expert Systems</h5>
+      <p>Software that mimics a human expert's reasoning.</p>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div style="margin-top: 80px;"></div>
+  <div class="section-tag">HISTORY · SCROLL HORIZONTALLY</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">Seventy years <em>in motion.</em></h2>
+  <p class="lede">Hover any node. These dates appear directly on exams.</p>
+  <div class="tl-wrap">
+    <div class="tl-line"></div>
+    <div class="tl-row">
+      <div class="tl-node"><div class="yr">'50</div><div class="ev">Turing Test proposed</div><div class="dt">Alan Turing</div></div>
+      <div class="tl-node"><div class="yr">'56</div><div class="ev">"Artificial Intelligence" coined</div><div class="dt">John McCarthy, Dartmouth</div></div>
+      <div class="tl-node"><div class="yr">'66</div><div class="ev">ELIZA chatbot</div><div class="dt">Joseph Weizenbaum</div></div>
+      <div class="tl-node"><div class="yr">'80</div><div class="ev">Expert Systems rise, then AI Winter</div><div class="dt">1987 to 1993</div></div>
+      <div class="tl-node"><div class="yr">'97</div><div class="ev">Deep Blue beats Kasparov</div><div class="dt">IBM, chess</div></div>
+      <div class="tl-node"><div class="yr">'02</div><div class="ev">Roomba arrives</div><div class="dt">first mass robot</div></div>
+      <div class="tl-node"><div class="yr">'11</div><div class="ev">Watson wins Jeopardy · Siri launches</div><div class="dt">IBM · Apple</div></div>
+      <div class="tl-node"><div class="yr">'15</div><div class="ev">AlphaGo beats Lee Sedol</div><div class="dt">DeepMind</div></div>
+      <div class="tl-node"><div class="yr">'20</div><div class="ev">GPT-3 · AlphaFold 2</div><div class="dt">OpenAI · DeepMind</div></div>
+      <div class="tl-node"><div class="yr">'22</div><div class="ev">ChatGPT public release</div><div class="dt">OpenAI</div></div>
+    </div>
+  </div>
+
+  <!-- Search algorithms -->
+  <div style="margin-top: 80px;"></div>
+  <div class="section-tag">SEARCH STRATEGIES</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">How AI <em>navigates problems.</em></h2>
+  <p class="lede">Two families. Uninformed search is blind. Informed search uses a heuristic to peek ahead.</p>
+
+  <div class="algo-grid">
+    <div class="algo">
+      <span class="badge uninformed">UNINFORMED</span>
+      <h5>BFS</h5>
+      <div class="sub">FIFO queue · level by level</div>
+      <p>Explores all nodes at the current level before going deeper. Guarantees the shortest path in steps. Memory hungry.</p>
+    </div>
+    <div class="algo">
+      <span class="badge uninformed">UNINFORMED</span>
+      <h5>DFS</h5>
+      <div class="sub">Stack · depth first</div>
+      <p>Goes as deep as possible before backtracking. Very low memory use. Can get stuck in infinite loops.</p>
+    </div>
+    <div class="algo">
+      <span class="badge informed">INFORMED</span>
+      <h5>Greedy Best First</h5>
+      <div class="sub">f(n) = h(n)</div>
+      <p>Always picks the node that looks closest to the goal. Fast but not optimal.</p>
+    </div>
+    <div class="algo">
+      <span class="badge informed">INFORMED</span>
+      <h5>A* Search</h5>
+      <div class="sub">f(n) = g(n) + h(n)</div>
+      <p>Combines actual cost with heuristic estimate. Optimal if the heuristic is admissible (never overestimates).</p>
+    </div>
+  </div>
+
+  <div class="formula">
+    <span class="lbl">The four properties to compare any search algorithm</span>
+    Completeness · Optimality · Time Complexity · Space Complexity
+  </div>
+
+  <!-- Local search -->
+  <div style="margin-top: 60px;"></div>
+  <div class="section-tag">LOCAL SEARCH</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:24px;">Climbing the <em>solution landscape.</em></h2>
+  <div class="concept-strip">
+    <div class="concept">
+      <div class="ic">→ SIMPLE</div>
+      <h5>Hill Climbing</h5>
+      <p>Always move to a better neighbor. Easy to implement, easy to trap in a local optimum.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ THERMAL</div>
+      <h5>Simulated Annealing</h5>
+      <p>Inspired by metallurgy. Allows occasional worse moves to escape local optima, with decreasing probability.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ PARALLEL</div>
+      <h5>Local Beam Search</h5>
+      <p>Tracks multiple states at once. More exploration, less risk of getting stuck.</p>
+    </div>
+  </div>
+
+  <div class="formula" style="margin-top: 32px;">
+    <span class="lbl">First Order Predicate Logic · medical example</span>
+    ∀x (Fever(x) ∧ Cough(x) → SuspectFlu(x))
+  </div>
+
+  <!-- QUIZ 1 -->
+  <div class="quiz" id="quiz-1">
+    <div class="quiz-head">
+      <div>
+        <div class="quiz-title">Test yourself.</div>
+        <div class="quiz-sub">CHAPTER 01 · 5 RANDOM QUESTIONS · REFRESH FOR NEW SET</div>
+      </div>
+      <div class="quiz-progress" id="progress-1">0 / 5</div>
+    </div>
+    <div id="questions-1"></div>
+    <div class="quiz-actions">
+      <button class="btn" id="submit-1">Submit Answers</button>
+      <button class="btn secondary" id="reshuffle-1">↻ New Questions</button>
+    </div>
+    <div class="score" id="score-1">
+      <div class="score-num" id="score-num-1">0/5</div>
+      <div class="score-label">CHAPTER 01 RESULT</div>
+      <div class="score-msg" id="score-msg-1"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 2 ============ -->
+<section class="chapter theme-c2" id="chapter-2">
+  <div class="ch-mark">CHAPTER 02 / 04</div>
+  <div class="ch-hero">
+    <h2>Networks <em>that learn.</em></h2>
+    <div class="ch-summary">
+      An ANN is a web of artificial neurons inspired by the brain. Inputs become outputs through <span class="kw">weights, summation,</span> and a final <span class="kw">activation function</span>.
+    </div>
+  </div>
+
+  <!-- Bio vs Artificial -->
+  <div class="section-tag">SIDE BY SIDE</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">Biological <em>meets</em> artificial.</h2>
+  <div class="two-col">
+    <div class="col">
+      <div class="col-label">BIOLOGICAL NEURON · BNN</div>
+      <h4>The brain blueprint</h4>
+      <dl>
+        <dt>Receiver</dt><dd>Dendrites pick up incoming signals</dd>
+        <dt>Connection</dt><dd>Synapses with chemical neurotransmitters</dd>
+        <dt>Processor</dt><dd>Cell body and nucleus integrate signals</dd>
+        <dt>Output</dt><dd>Axon fires the signal forward</dd>
+      </dl>
+    </div>
+    <div class="col">
+      <div class="col-label">ARTIFICIAL NEURON · ANN</div>
+      <h4 class="alt">The math version</h4>
+      <dl>
+        <dt>Receiver</dt><dd>Input layer x₁, x₂, ..., xₙ</dd>
+        <dt>Connection</dt><dd>Weights w₁, w₂, ..., wₙ</dd>
+        <dt>Processor</dt><dd>Weighted sum plus bias</dd>
+        <dt>Output</dt><dd>y = f(Σ wᵢxᵢ + b)</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Neural lab -->
+  <div class="neuron-lab">
+    <div class="lab-label">VISUAL · MULTI-LAYER PERCEPTRON</div>
+    <div class="lab-title">The three layer structure</div>
+    <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="netGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#ff9ed8" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#ff6b9d" stop-opacity="0.55"/>
+        </linearGradient>
+      </defs>
+      <g stroke="url(#netGrad)" stroke-width="1.5" fill="none">
+        <line x1="120" y1="90"  x2="350" y2="70"/>
+        <line x1="120" y1="90"  x2="350" y2="140"/>
+        <line x1="120" y1="90"  x2="350" y2="210"/>
+        <line x1="120" y1="170" x2="350" y2="70"/>
+        <line x1="120" y1="170" x2="350" y2="140"/>
+        <line x1="120" y1="170" x2="350" y2="210"/>
+        <line x1="120" y1="250" x2="350" y2="70"/>
+        <line x1="120" y1="250" x2="350" y2="140"/>
+        <line x1="120" y1="250" x2="350" y2="210"/>
+        <line x1="350" y1="70"  x2="580" y2="90"/>
+        <line x1="350" y1="70"  x2="580" y2="170"/>
+        <line x1="350" y1="70"  x2="580" y2="250"/>
+        <line x1="350" y1="140" x2="580" y2="90"/>
+        <line x1="350" y1="140" x2="580" y2="170"/>
+        <line x1="350" y1="140" x2="580" y2="250"/>
+        <line x1="350" y1="210" x2="580" y2="90"/>
+        <line x1="350" y1="210" x2="580" y2="170"/>
+        <line x1="350" y1="210" x2="580" y2="250"/>
+        <line x1="580" y1="90"  x2="720" y2="170"/>
+        <line x1="580" y1="170" x2="720" y2="170"/>
+        <line x1="580" y1="250" x2="720" y2="170"/>
+      </g>
+      <g>
+        <circle cx="120" cy="90" r="22" fill="#0d1016" stroke="#ff9ed8" stroke-width="2"/>
+        <circle cx="120" cy="170" r="22" fill="#0d1016" stroke="#ff9ed8" stroke-width="2"/>
+        <circle cx="120" cy="250" r="22" fill="#0d1016" stroke="#ff9ed8" stroke-width="2"/>
+        <circle cx="350" cy="70" r="22" fill="#0d1016" stroke="#ff6b9d" stroke-width="2"/>
+        <circle cx="350" cy="140" r="22" fill="#0d1016" stroke="#ff6b9d" stroke-width="2"/>
+        <circle cx="350" cy="210" r="22" fill="#0d1016" stroke="#ff6b9d" stroke-width="2"/>
+        <circle cx="580" cy="90" r="22" fill="#0d1016" stroke="#ff6b9d" stroke-width="2"/>
+        <circle cx="580" cy="170" r="22" fill="#0d1016" stroke="#ff6b9d" stroke-width="2"/>
+        <circle cx="580" cy="250" r="22" fill="#0d1016" stroke="#ff6b9d" stroke-width="2"/>
+        <circle cx="720" cy="170" r="24" fill="#0d1016" stroke="#ffb86b" stroke-width="2"/>
+      </g>
+      <g font-family="JetBrains Mono, monospace" font-size="11" fill="#b6bdc9" text-anchor="middle">
+        <text x="120" y="315">INPUT</text>
+        <text x="465" y="315">HIDDEN</text>
+        <text x="720" y="315">OUTPUT</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- McCulloch Pitts moment -->
+  <div class="pullquote" style="border-top-color:#ff9ed8;">
+    1943. McCulloch and Pitts propose the first artificial neuron. Binary inputs, binary output, no learning. Every modern deep network descends from this one model.
+    <cite>The origin moment</cite>
+  </div>
+
+  <!-- Network types -->
+  <div class="section-tag">TYPES OF NETWORKS</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:24px;">Pick your <em>flavor.</em></h2>
+  <div class="concept-strip">
+    <div class="concept">
+      <div class="ic">→ FORWARD</div>
+      <h5>Feedforward</h5>
+      <p>Data flows one way: input to output. No loops.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ IMAGES</div>
+      <h5>Convolutional (CNN)</h5>
+      <p>For grid-like data like images. Uses convolution and pooling layers.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ SEQUENCES</div>
+      <h5>Recurrent (RNN)</h5>
+      <p>Has feedback loops. Built for sequential data like text and time series.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ DISTANCE</div>
+      <h5>Radial Basis</h5>
+      <p>Activations based on distance from a center point.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ DIVIDED</div>
+      <h5>Modular</h5>
+      <p>Independent sub-networks combined at the end.</p>
+    </div>
+  </div>
+
+  <!-- Learning rules -->
+  <div style="margin-top: 80px;"></div>
+  <div class="section-tag">LEARNING RULES</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">Six ways a network <em>updates itself.</em></h2>
+  <div class="rules-cluster">
+    <div class="rule-chip">
+      <div class="icon">i</div>
+      <h5>Hebbian</h5>
+      <p>"Neurons that fire together wire together." Correlation strengthens weights.</p>
+    </div>
+    <div class="rule-chip">
+      <div class="icon">ii</div>
+      <h5>Perceptron Rule</h5>
+      <p>Adjust weights based on the error between predicted and actual output.</p>
+    </div>
+    <div class="rule-chip">
+      <div class="icon">iii</div>
+      <h5>Delta Rule</h5>
+      <p>Gradient descent. Minimizes squared error. Foundation of modern training.</p>
+    </div>
+    <div class="rule-chip">
+      <div class="icon">iv</div>
+      <h5>Competitive</h5>
+      <p>Only the winning neuron updates. Used in clustering and self-organizing maps.</p>
+    </div>
+    <div class="rule-chip">
+      <div class="icon">v</div>
+      <h5>Reinforcement</h5>
+      <p>Weights change based on rewards or penalties for actions.</p>
+    </div>
+    <div class="rule-chip">
+      <div class="icon">vi</div>
+      <h5>Oja's Rule</h5>
+      <p>A modified Hebbian rule that normalizes weights to prevent unlimited growth.</p>
+    </div>
+  </div>
+
+  <!-- Supervised networks tabs -->
+  <div style="margin-top: 80px;"></div>
+  <div class="section-tag">SUPERVISED LEARNING</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">Four <em>famous</em> networks.</h2>
+  <p class="lede">Trained with labeled data. The lineage runs from Rosenblatt's Perceptron all the way to today's deep learning.</p>
+
+  <div class="tabs" id="snTabs">
+    <button class="tab active" data-target="sn-perceptron">Perceptron</button>
+    <button class="tab" data-target="sn-adaline">Adaline</button>
+    <button class="tab" data-target="sn-madaline">Madaline</button>
+    <button class="tab" data-target="sn-bp">Backpropagation</button>
+  </div>
+
+  <div class="tab-pane active" id="sn-perceptron">
+    <div class="algo">
+      <span class="tag hi">1958</span><span class="tag">FRANK ROSENBLATT</span><span class="tag">LINEAR</span>
+      <h5 style="margin-top:14px;">Perceptron</h5>
+      <p style="margin-top:8px;">The simplest neural network. Single layer, step activation function, linear classifier. Works only for linearly separable problems.</p>
+    </div>
+  </div>
+  <div class="tab-pane" id="sn-adaline">
+    <div class="algo">
+      <span class="tag hi">WIDROW & HOFF</span><span class="tag">CONTINUOUS</span><span class="tag">MSE</span>
+      <h5 style="margin-top:14px;">Adaline · Adaptive Linear Neuron</h5>
+      <p style="margin-top:8px;">Like the Perceptron but with a continuous activation function. Minimizes Mean Squared Error.</p>
+      <div class="formula"><span class="lbl">Output</span>y = Σ wᵢxᵢ</div>
+      <div class="formula"><span class="lbl">Delta Rule for weight update</span>Δwᵢ = η · (d − y) · xᵢ</div>
+      <p style="font-size:0.86rem;color:var(--ink-3);">d is desired, y is predicted, η is the learning rate.</p>
+    </div>
+  </div>
+  <div class="tab-pane" id="sn-madaline">
+    <div class="algo">
+      <span class="tag hi">MULTI ADALINE</span><span class="tag">NON-LINEAR</span>
+      <h5 style="margin-top:14px;">Madaline · Multiple Adaline</h5>
+      <p style="margin-top:8px;">Multi-layer extension of Adaline. Handles non-linear problems.</p>
+      <p style="margin-top:8px;">Two training rules: Rule I updates weights only when the output is wrong. Rule II minimizes a global cost function.</p>
+    </div>
+  </div>
+  <div class="tab-pane" id="sn-bp">
+    <div class="algo">
+      <span class="tag hi">1986</span><span class="tag">RUMELHART, HINTON, WILLIAMS</span>
+      <h5 style="margin-top:14px;">Backpropagation</h5>
+      <p style="margin-top:8px;">The workhorse of deep learning. Four phase training loop:</p>
+      <div style="margin-top:12px;">
+        <div class="formula" style="margin: 6px 0;"><strong>1. Forward Propagation</strong> · compute outputs from inputs</div>
+        <div class="formula" style="margin: 6px 0;"><strong>2. Error Calculation</strong> · compare prediction to target</div>
+        <div class="formula" style="margin: 6px 0;"><strong>3. Backward Propagation</strong> · send error backward</div>
+        <div class="formula" style="margin: 6px 0;"><strong>4. Weight Update</strong> · adjust with gradient descent</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hopfield -->
+  <div style="margin-top: 80px;"></div>
+  <div class="section-tag">ASSOCIATIVE MEMORY</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">The Hopfield <em>network.</em></h2>
+  <div class="algo">
+    <span class="tag hi">1982</span><span class="tag">JOHN HOPFIELD</span><span class="tag">RECURRENT</span>
+    <h5 style="margin-top:14px;">Recall from partial input</h5>
+    <p style="margin-top:8px;">A recurrent network used as associative memory. Stores patterns and retrieves them even from noisy or incomplete inputs. Recalling a face from a blurry photo is the classic example. Also used to find energy minima in optimization problems like the Traveling Salesman.</p>
+  </div>
+
+  <!-- Train/test -->
+  <div style="margin-top: 60px;"></div>
+  <div class="two-col">
+    <div class="col">
+      <div class="col-label">DATA SPLIT</div>
+      <h4>80% Training</h4>
+      <p style="color: var(--ink-2);">Used to build the model. Learning algorithms extract patterns from this set.</p>
+    </div>
+    <div class="col">
+      <div class="col-label">DATA SPLIT</div>
+      <h4 class="alt">20% Testing</h4>
+      <p style="color: var(--ink-2);">Used to verify the model. Measures accuracy on data it has never seen.</p>
+    </div>
+  </div>
+
+  <!-- QUIZ 2 -->
+  <div class="quiz" id="quiz-2">
+    <div class="quiz-head">
+      <div>
+        <div class="quiz-title">Test yourself.</div>
+        <div class="quiz-sub">CHAPTER 02 · 5 RANDOM QUESTIONS · REFRESH FOR NEW SET</div>
+      </div>
+      <div class="quiz-progress" id="progress-2">0 / 5</div>
+    </div>
+    <div id="questions-2"></div>
+    <div class="quiz-actions">
+      <button class="btn" id="submit-2">Submit Answers</button>
+      <button class="btn secondary" id="reshuffle-2">↻ New Questions</button>
+    </div>
+    <div class="score" id="score-2">
+      <div class="score-num" id="score-num-2">0/5</div>
+      <div class="score-label">CHAPTER 02 RESULT</div>
+      <div class="score-msg" id="score-msg-2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 3 ============ -->
+<section class="chapter theme-c3" id="chapter-3">
+  <div class="ch-mark">CHAPTER 03 / 04</div>
+  <div class="ch-hero">
+    <h2>Reasoning <em>in shades of gray.</em></h2>
+    <div class="ch-summary">
+      Classical logic insists on true or false. Fuzzy logic, invented by <span class="kw">Lotfi A. Zadeh in 1965</span>, allows any value between 0 and 1. That flexibility models human reasoning beautifully.
+    </div>
+  </div>
+
+  <!-- Interactive demo -->
+  <div class="section-tag">LIVE DEMO · DRAG THE SLIDER</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">Watch fuzzy <em>thinking</em> work.</h2>
+  <p class="lede">A temperature reading produces membership in multiple linguistic categories at the same time. Move the slider to feel it.</p>
+
+  <div class="fuzzy-demo">
+    <div class="fuzzy-control">
+      <div class="fuzzy-slider-wrap">
+        <div class="lab-label">INPUT · ROOM TEMPERATURE</div>
+        <div class="fuzzy-value"><span id="fuzzyTemp">23</span><span class="unit">°C</span></div>
+        <input type="range" min="10" max="40" value="23" class="fuzzy-slider" id="fuzzySlider"/>
+        <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono', monospace; font-size:0.74rem; color:var(--ink-3);">
+          <span>10°C</span><span>25°C</span><span>40°C</span>
+        </div>
+      </div>
+      <div>
+        <div class="lab-label">FUZZY MEMBERSHIP</div>
+        <div class="fuzzy-bars">
+          <div class="fbar">
+            <div class="fbar-label">Cold</div>
+            <div class="fbar-track"><div class="fbar-fill cold" id="barCold" style="width:0%"></div></div>
+            <div class="fbar-val" id="valCold">0.00</div>
+          </div>
+          <div class="fbar">
+            <div class="fbar-label">Comfortable</div>
+            <div class="fbar-track"><div class="fbar-fill comf" id="barComf" style="width:0%"></div></div>
+            <div class="fbar-val" id="valComf">0.00</div>
+          </div>
+          <div class="fbar">
+            <div class="fbar-label">Hot</div>
+            <div class="fbar-track"><div class="fbar-fill hot" id="barHot" style="width:0%"></div></div>
+            <div class="fbar-val" id="valHot">0.00</div>
+          </div>
+        </div>
+        <div class="fuzzy-out">
+          <div>
+            <div class="ol">DEFUZZIFIED OUTPUT</div>
+            <div class="ov" id="fanLabel">Medium</div>
+          </div>
+          <div class="or"><span id="fanRpm">1000</span> RPM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operations -->
+  <div style="margin-top: 60px;"></div>
+  <div class="section-tag">THE THREE OPERATIONS</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">Memorize <em>these three.</em></h2>
+  <p class="lede">They appear on almost every fuzzy logic exam.</p>
+  <div class="ops-trio">
+    <div class="op-card">
+      <svg viewBox="0 0 200 90">
+        <circle cx="75" cy="45" r="35" fill="#ffb86b" fill-opacity="0.5"/>
+        <circle cx="125" cy="45" r="35" fill="#ff7a5c" fill-opacity="0.5"/>
+      </svg>
+      <div class="sym">∪</div>
+      <h5>Union</h5>
+      <div class="f">max(μA, μB)</div>
+    </div>
+    <div class="op-card">
+      <svg viewBox="0 0 200 90">
+        <circle cx="75" cy="45" r="35" fill="#ffb86b" fill-opacity="0.35"/>
+        <circle cx="125" cy="45" r="35" fill="#ff7a5c" fill-opacity="0.35"/>
+        <clipPath id="cint">
+          <circle cx="75" cy="45" r="35"/>
+        </clipPath>
+        <circle cx="125" cy="45" r="35" fill="#ffb86b" fill-opacity="0.95" clip-path="url(#cint)"/>
+      </svg>
+      <div class="sym">∩</div>
+      <h5>Intersection</h5>
+      <div class="f">min(μA, μB)</div>
+    </div>
+    <div class="op-card">
+      <svg viewBox="0 0 200 90">
+        <rect x="40" y="15" width="120" height="60" fill="#ffb86b" fill-opacity="0.18" stroke="#ffb86b" stroke-width="1"/>
+        <circle cx="100" cy="45" r="28" fill="#0d1016"/>
+      </svg>
+      <div class="sym">¬</div>
+      <h5>Complement</h5>
+      <div class="f">1 − μA</div>
+    </div>
+  </div>
+
+  <!-- Mamdani vs Sugeno -->
+  <div style="margin-top: 60px;"></div>
+  <div class="section-tag">FUZZY INFERENCE SYSTEMS</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">Mamdani <em>vs</em> Sugeno.</h2>
+  <div class="two-col">
+    <div class="col">
+      <div class="col-label">1975 · EBRAHIM MAMDANI</div>
+      <h4>Mamdani FIS</h4>
+      <dl>
+        <dt>Output</dt><dd>Fuzzy sets that need defuzzifying</dd>
+        <dt>Best for</dt><dd>Interpretability, expert systems</dd>
+        <dt>Defuzzification</dt><dd>Often the Centroid method</dd>
+      </dl>
+    </div>
+    <div class="col">
+      <div class="col-label">1980s · TAKAGI, SUGENO, KANG</div>
+      <h4 class="alt">Sugeno FIS</h4>
+      <dl>
+        <dt>Output</dt><dd>Crisp value from a math function</dd>
+        <dt>Best for</dt><dd>Mathematical modeling, optimization</dd>
+        <dt>Defuzzification</dt><dd>Weighted average, simpler</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- FLC pipeline -->
+  <div style="margin-top: 60px;"></div>
+  <div class="section-tag">THE FOUR PHASE PIPELINE</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:24px;">How an FLC <em>thinks.</em></h2>
+  <div class="numbered-row">
+    <div class="num" style="font-style:italic;">01</div>
+    <div>
+      <h4>Fuzzification</h4>
+      <p>Convert crisp input into fuzzy membership values. 25°C becomes 0.3 cold, 0.7 comfortable.</p>
+    </div>
+  </div>
+  <div class="numbered-row">
+    <div class="num" style="font-style:italic;">02</div>
+    <div>
+      <h4>Rule Base</h4>
+      <p>A set of IF THEN rules. IF temp is cold, THEN fan is low. The expert knowledge lives here.</p>
+    </div>
+  </div>
+  <div class="numbered-row">
+    <div class="num" style="font-style:italic;">03</div>
+    <div>
+      <h4>Inference Engine</h4>
+      <p>Evaluates the rules and aggregates them into one combined fuzzy output set.</p>
+    </div>
+  </div>
+  <div class="numbered-row">
+    <div class="num" style="font-style:italic;">04</div>
+    <div>
+      <h4>Defuzzification</h4>
+      <p>Convert that fuzzy output back into one crisp number the real world can act on.</p>
+    </div>
+  </div>
+
+  <!-- Defuzzification methods -->
+  <div style="margin-top: 60px;"></div>
+  <div class="section-tag">DEFUZZIFICATION METHODS</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:24px;">Six ways to <em>crisp it up.</em></h2>
+  <div class="defuz-list">
+    <div class="defuz-row">
+      <div class="n">i</div>
+      <div><h6>Centroid Method</h6><p>Finds the center of mass of the fuzzy output set. The most common method.</p></div>
+    </div>
+    <div class="defuz-row">
+      <div class="n">ii</div>
+      <div><h6>Bisector of Area</h6><p>Divides the area under the membership curve into two equal halves.</p></div>
+    </div>
+    <div class="defuz-row">
+      <div class="n">iii</div>
+      <div><h6>Mean of Maximum (MOM)</h6><p>Average of all values where membership is at its peak.</p></div>
+    </div>
+    <div class="defuz-row">
+      <div class="n">iv</div>
+      <div><h6>Largest of Maximum (LOM)</h6><p>Largest value where membership reaches its peak.</p></div>
+    </div>
+    <div class="defuz-row">
+      <div class="n">v</div>
+      <div><h6>Smallest of Maximum (SOM)</h6><p>Smallest value where membership reaches its peak.</p></div>
+    </div>
+    <div class="defuz-row">
+      <div class="n">vi</div>
+      <div><h6>Weighted Average</h6><p>Average of outputs weighted by their degrees of membership.</p></div>
+    </div>
+  </div>
+
+  <!-- QUIZ 3 -->
+  <div class="quiz" id="quiz-3">
+    <div class="quiz-head">
+      <div>
+        <div class="quiz-title">Test yourself.</div>
+        <div class="quiz-sub">CHAPTER 03 · 5 RANDOM QUESTIONS · REFRESH FOR NEW SET</div>
+      </div>
+      <div class="quiz-progress" id="progress-3">0 / 5</div>
+    </div>
+    <div id="questions-3"></div>
+    <div class="quiz-actions">
+      <button class="btn" id="submit-3">Submit Answers</button>
+      <button class="btn secondary" id="reshuffle-3">↻ New Questions</button>
+    </div>
+    <div class="score" id="score-3">
+      <div class="score-num" id="score-num-3">0/5</div>
+      <div class="score-label">CHAPTER 03 RESULT</div>
+      <div class="score-msg" id="score-msg-3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 4: OPTIMIZATION ============ -->
+<section class="chapter theme-c4" id="chapter-4">
+  <div class="ch-mark">CHAPTER 04 / 04</div>
+  <div class="ch-hero">
+    <h2>Optimization <em>by imitation.</em></h2>
+    <div class="ch-summary">
+      When the search space is too big to brute force, AI borrows from nature. <span class="kw">Genetic Algorithms</span> mimic evolution. <span class="kw">Ant Colony Optimization</span> mimics foraging swarms.
+    </div>
+  </div>
+
+  <div class="pullquote" style="border-top-color:#9eff8c;">
+    Nature spent four billion years optimizing. The smartest algorithms are the ones that copy her homework.
+    <cite>Why nature inspired algorithms work</cite>
+  </div>
+
+  <!-- Genetic Algorithm -->
+  <div class="section-tag">GENETIC ALGORITHM</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">Survival of the <em>fittest solution.</em></h2>
+  <p class="lede">Treat each possible solution as a chromosome. Evolve a population of them over generations. The best survive and reproduce.</p>
+
+  <div class="ga-cycle">
+    <div class="ga-step">
+      <div class="stp">01 · INIT</div>
+      <h5>Initial Population</h5>
+      <p>Generate a random set of candidate solutions, each encoded as a chromosome.</p>
+    </div>
+    <div class="ga-step">
+      <div class="stp">02 · SCORE</div>
+      <h5>Fitness Evaluation</h5>
+      <p>Score each chromosome using a fitness function. Higher fitness means a better solution.</p>
+    </div>
+    <div class="ga-step">
+      <div class="stp">03 · PICK</div>
+      <h5>Selection</h5>
+      <p>Pick parents for the next generation. Fitter chromosomes have a higher chance of being chosen.</p>
+    </div>
+    <div class="ga-step">
+      <div class="stp">04 · MIX</div>
+      <h5>Crossover</h5>
+      <p>Combine genetic material from two parents to produce offspring with mixed traits.</p>
+    </div>
+    <div class="ga-step">
+      <div class="stp">05 · TWEAK</div>
+      <h5>Mutation</h5>
+      <p>Randomly flip small parts of a chromosome to maintain diversity and avoid local optima.</p>
+    </div>
+  </div>
+
+  <div class="formula">
+    <span class="lbl">The three core operators every GA uses</span>
+    Selection · Crossover · Mutation
+  </div>
+
+  <div class="two-col" style="margin-top:32px;">
+    <div class="col">
+      <div class="col-label">VOCABULARY · GA</div>
+      <h4>The genetic lexicon</h4>
+      <dl>
+        <dt>Chromosome</dt><dd>One candidate solution, encoded as a string of genes</dd>
+        <dt>Population</dt><dd>The full set of chromosomes in one generation</dd>
+        <dt>Fitness Function</dt><dd>The score that ranks how good a solution is</dd>
+        <dt>Generation</dt><dd>One full cycle of selection, crossover, mutation</dd>
+      </dl>
+    </div>
+    <div class="col">
+      <div class="col-label">WHEN TO USE</div>
+      <h4 class="alt">Best for</h4>
+      <dl>
+        <dt>Combinatorial Problems</dt><dd>Routing, scheduling, packing</dd>
+        <dt>Black Box Objectives</dt><dd>When you cannot compute a gradient</dd>
+        <dt>Large Search Spaces</dt><dd>Where brute force fails completely</dd>
+        <dt>Classic Example</dt><dd>The Traveling Salesman Problem</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Ant Colony Optimization -->
+  <div style="margin-top: 80px;"></div>
+  <div class="section-tag">ANT COLONY OPTIMIZATION</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:14px;">Following <em>the pheromones.</em></h2>
+  <p class="lede">Real ants find shortest paths to food without a map. They drop pheromones, the shortest path accumulates the most pheromones, and the whole colony converges on it.</p>
+
+  <div class="swarm-vis">
+    <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="path1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#9eff8c" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#6ee7a3" stop-opacity="0.8"/>
+        </linearGradient>
+        <linearGradient id="path2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#9eff8c" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#6ee7a3" stop-opacity="0.2"/>
+        </linearGradient>
+      </defs>
+      <!-- Nest -->
+      <circle cx="80" cy="120" r="26" fill="#0d1016" stroke="#9eff8c" stroke-width="2"/>
+      <text x="80" y="125" font-family="JetBrains Mono, monospace" font-size="11" fill="#9eff8c" text-anchor="middle">NEST</text>
+      <!-- Food -->
+      <circle cx="720" cy="120" r="26" fill="#0d1016" stroke="#ffb86b" stroke-width="2"/>
+      <text x="720" y="125" font-family="JetBrains Mono, monospace" font-size="11" fill="#ffb86b" text-anchor="middle">FOOD</text>
+      <!-- Strong path (shortest) -->
+      <path d="M 106 120 Q 400 80 694 120" fill="none" stroke="url(#path1)" stroke-width="5" stroke-linecap="round"/>
+      <text x="400" y="60" font-family="JetBrains Mono, monospace" font-size="11" fill="#9eff8c" text-anchor="middle">SHORTEST PATH · HIGH PHEROMONE</text>
+      <!-- Weak paths (longer) -->
+      <path d="M 106 120 Q 250 200 400 180 Q 550 160 694 120" fill="none" stroke="url(#path2)" stroke-width="2" stroke-dasharray="4 4"/>
+      <path d="M 106 120 Q 400 220 694 120" fill="none" stroke="url(#path2)" stroke-width="2" stroke-dasharray="4 4"/>
+      <!-- Ants -->
+      <circle cx="240" cy="103" r="4" fill="#9eff8c"/>
+      <circle cx="400" cy="100" r="4" fill="#9eff8c"/>
+      <circle cx="560" cy="103" r="4" fill="#9eff8c"/>
+      <circle cx="320" cy="195" r="3" fill="#9eff8c" opacity="0.4"/>
+      <circle cx="500" cy="175" r="3" fill="#9eff8c" opacity="0.4"/>
+    </svg>
+  </div>
+
+  <div class="rules-cluster">
+    <div class="rule-chip">
+      <div class="icon">i</div>
+      <h5>Pheromone Trail</h5>
+      <p>A chemical scent ants drop on their way. Stronger scent equals more attractive path.</p>
+    </div>
+    <div class="rule-chip">
+      <div class="icon">ii</div>
+      <h5>Probabilistic Choice</h5>
+      <p>Each ant picks its next step probabilistically based on pheromone strength plus heuristic info.</p>
+    </div>
+    <div class="rule-chip">
+      <div class="icon">iii</div>
+      <h5>Evaporation</h5>
+      <p>Pheromones fade over time, preventing the colony from getting stuck on suboptimal paths.</p>
+    </div>
+    <div class="rule-chip">
+      <div class="icon">iv</div>
+      <h5>Reinforcement</h5>
+      <p>Better solutions get extra pheromone. The colony converges on the shortest path.</p>
+    </div>
+  </div>
+
+  <!-- GA vs ACO -->
+  <div style="margin-top: 60px;"></div>
+  <div class="two-col">
+    <div class="col">
+      <div class="col-label">EVOLUTIONARY</div>
+      <h4>Genetic Algorithm</h4>
+      <dl>
+        <dt>Inspired by</dt><dd>Darwinian evolution</dd>
+        <dt>Population</dt><dd>Chromosomes evolving over generations</dd>
+        <dt>Operators</dt><dd>Selection, Crossover, Mutation</dd>
+        <dt>Strength</dt><dd>Broad exploration of solution space</dd>
+      </dl>
+    </div>
+    <div class="col">
+      <div class="col-label">SWARM</div>
+      <h4 class="alt">Ant Colony Optimization</h4>
+      <dl>
+        <dt>Inspired by</dt><dd>Foraging behavior of real ants</dd>
+        <dt>Agents</dt><dd>Ants leaving pheromone trails</dd>
+        <dt>Operators</dt><dd>Deposit, Evaporate, Reinforce</dd>
+        <dt>Strength</dt><dd>Excellent on routing problems like TSP</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Applications -->
+  <div style="margin-top: 60px;"></div>
+  <div class="section-tag">REAL WORLD USES</div>
+  <h2 style="font-size:clamp(1.8rem, 4vw, 2.6rem); margin-bottom:24px;">Where these <em>actually run.</em></h2>
+  <div class="concept-strip">
+    <div class="concept">
+      <div class="ic">→ ROUTES</div>
+      <h5>Logistics</h5>
+      <p>Delivery route planning, vehicle scheduling, supply chain optimization.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ DESIGN</div>
+      <h5>Engineering</h5>
+      <p>Antenna shapes, aerodynamic profiles, structural optimization.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ MARKETS</div>
+      <h5>Finance</h5>
+      <p>Portfolio optimization, trading strategy evolution.</p>
+    </div>
+    <div class="concept">
+      <div class="ic">→ NETWORKS</div>
+      <h5>Telecoms</h5>
+      <p>Network routing, load balancing, frequency assignment.</p>
+    </div>
+  </div>
+
+  <!-- QUIZ 4 -->
+  <div class="quiz" id="quiz-4">
+    <div class="quiz-head">
+      <div>
+        <div class="quiz-title">Test yourself.</div>
+        <div class="quiz-sub">CHAPTER 04 · 5 RANDOM QUESTIONS · REFRESH FOR NEW SET</div>
+      </div>
+      <div class="quiz-progress" id="progress-4">0 / 5</div>
+    </div>
+    <div id="questions-4"></div>
+    <div class="quiz-actions">
+      <button class="btn" id="submit-4">Submit Answers</button>
+      <button class="btn secondary" id="reshuffle-4">↻ New Questions</button>
+    </div>
+    <div class="score" id="score-4">
+      <div class="score-num" id="score-num-4">0/5</div>
+      <div class="score-label">CHAPTER 04 RESULT</div>
+      <div class="score-msg" id="score-msg-4"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Final Revision</div>
+    <p>Built to help you ace tomorrow, not waste tonight.</p>
+    <p style="margin-top: 16px; font-size: 0.85rem;">Sleep well. You already know more than you think. 🌙</p>
+    <div class="powered">
+      Powered by <span>Faisal Albusaidi</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ==================== THEME ==================== */
+const root = document.documentElement;
+const toggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const themeLabel = document.getElementById('themeLabel');
+function setTheme(t) {
+  root.setAttribute('data-theme', t);
+  themeIcon.textContent = t === 'dark' ? '◐' : '◑';
+  themeLabel.textContent = t === 'dark' ? 'Light' : 'Dark';
+}
+toggle.addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  setTheme(next);
+});
+
+/* ==================== TABS ==================== */
+function initTabs(tabsId) {
+  const tabs = document.querySelectorAll(`#${tabsId} .tab`);
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      const target = t.dataset.target;
+      tabs.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const container = t.closest('.chapter');
+      container.querySelectorAll('.tab-pane').forEach(p => {
+        if (p.id.startsWith('sn-')) p.classList.toggle('active', p.id === target);
+      });
+    });
+  });
+}
+initTabs('snTabs');
+
+/* ==================== DEFINITIONS DATA ==================== */
+const definitions = [
+  // Chapter 1
+  { ch: 1, term: "Artificial Intelligence (AI)", desc: "A field of computer science focused on building machines capable of performing tasks that typically require human intelligence: perception, learning, reasoning, and problem solving.", hint: "Think: machines that think." },
+  { ch: 1, term: "Machine Learning", desc: "A subset of AI focused on algorithms that learn from data and improve over time without being explicitly programmed.", hint: "Data in, patterns out." },
+  { ch: 1, term: "Natural Language Processing", desc: "The branch of AI dealing with interaction between computers and humans through natural language.", hint: "Teaching machines to read and speak." },
+  { ch: 1, term: "Expert System", desc: "Software that mimics the decision-making ability of a human expert in a specific domain.", hint: "A specialist in a box." },
+  { ch: 1, term: "Heuristic", desc: "A rule of thumb or estimation function used to guide search algorithms toward likely good solutions.", hint: "An educated guess." },
+  { ch: 1, term: "Breadth First Search (BFS)", desc: "An uninformed search that explores all nodes at the current depth before moving deeper. Uses a FIFO queue. Guarantees the shortest path in steps.", hint: "Wide before deep." },
+  { ch: 1, term: "Depth First Search (DFS)", desc: "An uninformed search that explores as deep as possible along each branch before backtracking. Uses a stack.", hint: "Deep before wide." },
+  { ch: 1, term: "Greedy Best First Search", desc: "An informed search that always picks the node that looks closest to the goal using heuristic h(n) only.", hint: "Always grab the shiniest." },
+  { ch: 1, term: "A* Search", desc: "An informed search that uses f(n) = g(n) + h(n) where g is actual cost and h is heuristic. Optimal when h is admissible.", hint: "Actual plus estimated." },
+  { ch: 1, term: "Completeness", desc: "A property of search algorithms: guaranteed to find a solution if at least one exists.", hint: "Always finds something." },
+  { ch: 1, term: "Optimality", desc: "A property of search algorithms: guaranteed to return the best (lowest-cost) solution.", hint: "Finds the best." },
+  { ch: 1, term: "Hill Climbing", desc: "A local search that iteratively moves to a better neighboring solution. Simple but prone to getting stuck in local optima.", hint: "Climb until you cannot." },
+  { ch: 1, term: "Simulated Annealing", desc: "A local search inspired by metallurgy. Accepts worse moves with decreasing probability over time to escape local optima.", hint: "Sometimes go backward to win." },
+  { ch: 1, term: "Local Beam Search", desc: "A local search that maintains multiple candidate states in parallel and expands the best ones.", hint: "Many spotlights, not one." },
+  { ch: 1, term: "Traveling Salesman Problem (TSP)", desc: "An NP-hard combinatorial problem: find the shortest route visiting all cities exactly once and returning home. Classic benchmark for optimization.", hint: "Visit everywhere, return home, fastest." },
+  { ch: 1, term: "First Order Predicate Logic (FOPL)", desc: "An extension of propositional logic that uses quantifiers (∀, ∃) and predicates to represent detailed relationships.", hint: "Logic with variables and quantifiers." },
+  { ch: 1, term: "Turing Test", desc: "Proposed by Alan Turing in 1950: if a machine can fool a human into thinking it is human, it shows intelligence.", hint: "Pretend to be human." },
+
+  // Chapter 2
+  { ch: 2, term: "Artificial Neural Network (ANN)", desc: "A network of interconnected artificial neurons inspired by the human brain. Used for pattern recognition, classification, and prediction.", hint: "Math brain." },
+  { ch: 2, term: "Biological Neural Network (BNN)", desc: "The natural network of neurons in living organisms. Processes information through synapses and electrochemical signals.", hint: "The real thing." },
+  { ch: 2, term: "Neuron", desc: "The basic processing unit of a neural network, biological or artificial. Receives inputs, processes them, and produces an output.", hint: "The atom of thought." },
+  { ch: 2, term: "Synapse", desc: "The connection between two biological neurons. In ANNs, this corresponds to a weight.", hint: "Synapse equals weight." },
+  { ch: 2, term: "Weight", desc: "A learnable parameter in an ANN that scales an input signal. Equivalent to a biological synapse.", hint: "How much each input matters." },
+  { ch: 2, term: "Activation Function", desc: "A mathematical function applied to a neuron's weighted sum to introduce non-linearity. Examples: Sigmoid, ReLU, Tanh.", hint: "The neuron's decision filter." },
+  { ch: 2, term: "Input Layer", desc: "The first layer of an ANN that receives raw data.", hint: "Where data enters." },
+  { ch: 2, term: "Hidden Layer", desc: "Any layer between input and output that performs computations and feature extraction.", hint: "The middle, where magic happens." },
+  { ch: 2, term: "Output Layer", desc: "The final layer that produces the network's prediction.", hint: "Where answers exit." },
+  { ch: 2, term: "McCulloch-Pitts Neuron", desc: "The original artificial neuron model from 1943. Binary inputs and output, weighted sum, threshold. Cannot learn.", hint: "1943, binary, frozen." },
+  { ch: 2, term: "Hebbian Learning", desc: "A learning rule based on the principle that neurons firing together strengthen their connection.", hint: "Fire together, wire together." },
+  { ch: 2, term: "Perceptron Rule", desc: "A supervised learning rule that updates weights based on the error between predicted and actual output.", hint: "Wrong answer, adjust." },
+  { ch: 2, term: "Delta Rule", desc: "A learning rule using gradient descent to minimize squared error. Foundation of modern neural network training.", hint: "Slide down the error hill." },
+  { ch: 2, term: "Perceptron", desc: "The simplest neural network, introduced by Frank Rosenblatt in 1958. A single layer linear classifier with a step activation.", hint: "1958, single layer, linear only." },
+  { ch: 2, term: "Adaline", desc: "Adaptive Linear Neuron. Developed by Widrow and Hoff. Uses a continuous activation function and minimizes Mean Squared Error via the Delta Rule.", hint: "Continuous Perceptron." },
+  { ch: 2, term: "Madaline", desc: "Multiple Adaline. A multi-layer extension of Adaline that handles non-linear problems.", hint: "Many Adalines." },
+  { ch: 2, term: "Backpropagation", desc: "A supervised training algorithm popularized in 1986 by Rumelhart, Hinton, and Williams. Four phases: forward, error, backward, update.", hint: "1986, the deep learning starter." },
+  { ch: 2, term: "Hopfield Network", desc: "A recurrent neural network introduced by John Hopfield in 1982. Used as associative memory: stores patterns and retrieves them from partial input.", hint: "1982, memory from noise." },
+  { ch: 2, term: "Pattern Recognition", desc: "The process of classifying data based on knowledge already gained from patterns or statistical information.", hint: "Spot the pattern." },
+  { ch: 2, term: "Training Set", desc: "Typically 80% of the data, used to build the model.", hint: "Eighty percent, learn." },
+  { ch: 2, term: "Testing Set", desc: "Typically 20% of the data, used to verify model accuracy on unseen examples.", hint: "Twenty percent, prove it." },
+  { ch: 2, term: "Supervised Learning", desc: "Training a model on labeled data, mapping inputs to known outputs.", hint: "Teacher provides answers." },
+  { ch: 2, term: "Unsupervised Learning", desc: "Training on unlabeled data. The model finds structure or clusters on its own.", hint: "No teacher, just patterns." },
+
+  // Chapter 3
+  { ch: 3, term: "Fuzzy Logic", desc: "A form of logic that handles vague, imprecise reasoning. Invented by Lotfi A. Zadeh in 1965. Allows partial truth values between 0 and 1.", hint: "Zadeh, 1965, shades of gray." },
+  { ch: 3, term: "Classical (Crisp) Set", desc: "A traditional set where every element either fully belongs (1) or does not (0). No middle ground.", hint: "Strict yes or no." },
+  { ch: 3, term: "Fuzzy Set", desc: "A set where each element has a degree of membership between 0 and 1, defined by a membership function.", hint: "Membership in degrees." },
+  { ch: 3, term: "Membership Function", desc: "A function that assigns a value between 0 and 1 to each element of a set. Common shapes: Triangular, Trapezoidal, Gaussian.", hint: "Shape of belonging." },
+  { ch: 3, term: "Fuzzy Union", desc: "Combines two fuzzy sets by taking the maximum of their memberships. μA∪B(x) = max(μA(x), μB(x)).", hint: "Max means union." },
+  { ch: 3, term: "Fuzzy Intersection", desc: "Combines two fuzzy sets by taking the minimum of their memberships. μA∩B(x) = min(μA(x), μB(x)).", hint: "Min means intersect." },
+  { ch: 3, term: "Fuzzy Complement", desc: "The opposite of a fuzzy set. μĀ(x) = 1 − μA(x).", hint: "One minus mu." },
+  { ch: 3, term: "Fuzzy Rule Base", desc: "A collection of IF THEN rules that captures expert knowledge about how inputs map to outputs.", hint: "If this, then that." },
+  { ch: 3, term: "Aggregation", desc: "Combining the outputs of multiple fired fuzzy rules into a single fuzzy output set.", hint: "Merge all rule outputs." },
+  { ch: 3, term: "Fuzzy Inference System (FIS)", desc: "A framework for reasoning with fuzzy logic. Maps inputs to outputs using rules. Two famous types: Mamdani and Sugeno.", hint: "The fuzzy reasoning engine." },
+  { ch: 3, term: "Mamdani FIS", desc: "Proposed by Ebrahim Mamdani in 1975. Uses fuzzy sets for outputs that need defuzzification. Best for interpretability.", hint: "Mamdani, 1975, fuzzy out." },
+  { ch: 3, term: "Sugeno FIS", desc: "Proposed by Takagi, Sugeno, and Kang in the 1980s. Output is a crisp value from a math function. Best for optimization.", hint: "Sugeno, math output." },
+  { ch: 3, term: "Fuzzification", desc: "Converting crisp input values into fuzzy membership degrees.", hint: "Crisp in, fuzzy out." },
+  { ch: 3, term: "Defuzzification", desc: "Converting a fuzzy output set back into a single crisp value for real-world action.", hint: "Fuzzy in, crisp out." },
+  { ch: 3, term: "Centroid Method", desc: "The most common defuzzification method. Finds the center of mass of the fuzzy output set.", hint: "Center of mass." },
+  { ch: 3, term: "Fuzzy Logic Control (FLC)", desc: "A control system based on fuzzy logic. Four phases: Fuzzification, Rule Base, Inference, Defuzzification.", hint: "Fuzzy logic in action." },
+
+  // Chapter 4
+  { ch: 4, term: "Optimization", desc: "The process of finding the best solution from a set of feasible alternatives by maximizing or minimizing an objective function.", hint: "Find the best." },
+  { ch: 4, term: "Genetic Algorithm (GA)", desc: "An optimization technique inspired by Darwinian evolution. Evolves a population of candidate solutions over generations using selection, crossover, and mutation.", hint: "Evolution in code." },
+  { ch: 4, term: "Chromosome", desc: "A single candidate solution in a GA, encoded as a string of genes (often binary).", hint: "One possible answer." },
+  { ch: 4, term: "Population", desc: "The full set of chromosomes in one generation of a GA.", hint: "The current gene pool." },
+  { ch: 4, term: "Fitness Function", desc: "A scoring function that ranks how good a chromosome is at solving the problem.", hint: "How good is this answer?" },
+  { ch: 4, term: "Selection", desc: "A GA operator that picks parent chromosomes for reproduction, biased toward higher fitness.", hint: "Pick the fittest parents." },
+  { ch: 4, term: "Crossover", desc: "A GA operator that combines genetic material from two parents to produce offspring.", hint: "Mix two parents." },
+  { ch: 4, term: "Mutation", desc: "A GA operator that randomly alters small parts of a chromosome to maintain diversity.", hint: "Random tweak." },
+  { ch: 4, term: "Generation", desc: "One full cycle in a GA: evaluate, select, crossover, mutate to produce the next population.", hint: "One evolutionary loop." },
+  { ch: 4, term: "Ant Colony Optimization (ACO)", desc: "A swarm intelligence technique inspired by how ants find shortest paths using pheromone trails.", hint: "Ants find the shortest path." },
+  { ch: 4, term: "Pheromone", desc: "A chemical signal that real ants drop on a path. In ACO, a numerical value on each edge of a graph indicating its attractiveness.", hint: "Attractiveness score." },
+  { ch: 4, term: "Pheromone Evaporation", desc: "The gradual decay of pheromone values over time in ACO. Prevents the colony from getting stuck on early suboptimal solutions.", hint: "Old paths fade." },
+  { ch: 4, term: "Swarm Intelligence", desc: "Problem-solving that emerges from the collective behavior of decentralized, self-organized agents. ACO is the canonical example.", hint: "Smart together, simple alone." },
+  { ch: 4, term: "Metaheuristic", desc: "A high level strategy for solving optimization problems when exact methods are too expensive. GAs and ACO are both metaheuristics.", hint: "A recipe of recipes." }
+];
+
+/* ==================== DEFINITIONS UI ==================== */
+const defGrid = document.getElementById('defGrid');
+const defSearch = document.getElementById('defSearch');
+const defFilters = document.querySelectorAll('.def-filter');
+const defMeta = document.getElementById('defMeta');
+let currentFilter = 'all';
+let currentSearch = '';
+
+function renderDefinitions() {
+  defGrid.innerHTML = definitions.map((d, i) => `
+    <div class="def-card" data-chapter="${d.ch}" data-term="${d.term.toLowerCase()}" data-i="${i}">
+      <div class="def-inner">
+        <div class="def-face front">
+          <div class="def-tag"><span class="dot"></span>CHAPTER 0${d.ch}</div>
+          <div class="def-term">${d.term}</div>
+          <div class="def-hint">↻ Tap to reveal</div>
+        </div>
+        <div class="def-face back">
+          <div class="def-tag"><span class="dot"></span>DEFINITION</div>
+          <div class="def-desc">${d.desc}</div>
+          <div class="def-mnemonic">★ ${d.hint}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  document.querySelectorAll('.def-card').forEach(c => {
+    c.addEventListener('click', () => c.classList.toggle('flipped'));
+  });
+  applyDefFilters();
+}
+
+function applyDefFilters() {
+  let shown = 0;
+  document.querySelectorAll('.def-card').forEach(card => {
+    const ch = card.dataset.chapter;
+    const term = card.dataset.term;
+    const matchesFilter = currentFilter === 'all' || ch === currentFilter;
+    const matchesSearch = !currentSearch || term.includes(currentSearch) || 
+      definitions[parseInt(card.dataset.i)].desc.toLowerCase().includes(currentSearch);
+    if (matchesFilter && matchesSearch) {
+      card.classList.remove('hidden');
+      shown++;
+    } else {
+      card.classList.add('hidden');
+      card.classList.remove('flipped');
+    }
+  });
+  defMeta.textContent = `Showing ${shown} of ${definitions.length} terms · click any card to reveal the meaning`;
+}
+
+defFilters.forEach(f => {
+  f.addEventListener('click', () => {
+    defFilters.forEach(x => x.classList.remove('active'));
+    f.classList.add('active');
+    currentFilter = f.dataset.filter;
+    applyDefFilters();
+  });
+});
+defSearch.addEventListener('input', e => {
+  currentSearch = e.target.value.toLowerCase().trim();
+  applyDefFilters();
+});
+renderDefinitions();
+
+/* ==================== FUZZY DEMO ==================== */
+const fuzzySlider = document.getElementById('fuzzySlider');
+const fuzzyTemp = document.getElementById('fuzzyTemp');
+const barCold = document.getElementById('barCold');
+const barComf = document.getElementById('barComf');
+const barHot = document.getElementById('barHot');
+const valCold = document.getElementById('valCold');
+const valComf = document.getElementById('valComf');
+const valHot = document.getElementById('valHot');
+const fanLabel = document.getElementById('fanLabel');
+const fanRpm = document.getElementById('fanRpm');
+
+function updateFuzzy() {
+  const t = +fuzzySlider.value;
+  fuzzyTemp.textContent = t;
+  // Triangular membership functions
+  // Cold: peak at 15, zero by 22
+  // Comfortable: peak at 25 (22 to 28)
+  // Hot: peak at 33, starts at 28
+  let cold = Math.max(0, Math.min(1, (22 - t) / 7));
+  let comf = Math.max(0, t <= 25 ? (t - 18) / 7 : (32 - t) / 7);
+  comf = Math.min(1, Math.max(0, comf));
+  let hot = Math.max(0, Math.min(1, (t - 26) / 7));
+  
+  barCold.style.width = (cold * 100) + '%';
+  barComf.style.width = (comf * 100) + '%';
+  barHot.style.width = (hot * 100) + '%';
+  valCold.textContent = cold.toFixed(2);
+  valComf.textContent = comf.toFixed(2);
+  valHot.textContent = hot.toFixed(2);
+
+  // Weighted average defuzzification
+  const total = cold + comf + hot;
+  const rpm = total > 0 ? Math.round((cold * 500 + comf * 1000 + hot * 1500) / total) : 1000;
+  fanRpm.textContent = rpm;
+  fanLabel.textContent = rpm < 750 ? 'Low' : rpm < 1250 ? 'Medium' : 'High';
+}
+fuzzySlider.addEventListener('input', updateFuzzy);
+updateFuzzy();
+
+/* ==================== QUIZ DATA ==================== */
+const quizPools = {
+  1: [
+    { q: "Who coined the term 'Artificial Intelligence'?", opts: ["Alan Turing", "John McCarthy", "Marvin Minsky", "Lotfi Zadeh"], a: 1, why: "John McCarthy coined the term at the Dartmouth Conference in 1956." },
+    { q: "In what year was the term 'AI' officially introduced?", opts: ["1943", "1950", "1956", "1965"], a: 2, why: "The 1956 Dartmouth Conference is the birthplace of AI as a field." },
+    { q: "Which search algorithm uses a FIFO queue?", opts: ["DFS", "BFS", "A*", "Greedy"], a: 1, why: "Breadth First Search uses a FIFO queue to explore level by level." },
+    { q: "Which data structure does DFS use?", opts: ["Queue (FIFO)", "Stack (LIFO)", "Priority Queue", "Heap"], a: 1, why: "DFS uses a stack. It goes deep before backtracking." },
+    { q: "Which is the evaluation function used in A* search?", opts: ["f(n) = h(n)", "f(n) = g(n)", "f(n) = g(n) + h(n)", "f(n) = g(n) × h(n)"], a: 2, why: "A* combines actual cost g(n) and heuristic h(n)." },
+    { q: "Which of these is an INFORMED search algorithm?", opts: ["BFS", "DFS", "A*", "Uniform Cost"], a: 2, why: "A* uses a heuristic h(n), making it informed." },
+    { q: "In A*, what does h(n) represent?", opts: ["Actual cost from start to n", "Estimated cost from n to goal", "Total path cost", "Number of nodes expanded"], a: 1, why: "h(n) is the heuristic estimate of cost from node n to the goal." },
+    { q: "In what year was the Turing Test proposed?", opts: ["1943", "1950", "1956", "1966"], a: 1, why: "Alan Turing published 'Computing Machinery and Intelligence' in 1950." },
+    { q: "Who defeated chess champion Garry Kasparov in 1997?", opts: ["AlphaGo", "Watson", "Deep Blue", "ELIZA"], a: 2, why: "IBM's Deep Blue defeated Kasparov in 1997." },
+    { q: "Which local search algorithm is inspired by metallurgy?", opts: ["Hill Climbing", "Simulated Annealing", "Local Beam", "A*"], a: 1, why: "Simulated Annealing is based on the metallurgical annealing process." },
+    { q: "TSP stands for...", opts: ["Tree Search Path", "Travelling Salesman Problem", "Time Series Prediction", "Tabu Search Process"], a: 1, why: "TSP is a classic NP hard optimization problem." },
+    { q: "Which property guarantees an algorithm finds a solution if one exists?", opts: ["Optimality", "Completeness", "Time Complexity", "Soundness"], a: 1, why: "Completeness means guaranteed to return a solution if one exists." },
+    { q: "ELIZA, the early NLP chatbot, was developed in...", opts: ["1950", "1966", "1980", "1997"], a: 1, why: "Joseph Weizenbaum developed ELIZA in 1966." },
+    { q: "Which AI system defeated Lee Sedol at Go in 2015?", opts: ["Deep Blue", "Watson", "AlphaGo", "GPT-3"], a: 2, why: "DeepMind's AlphaGo defeated Lee Sedol in 2015." },
+    { q: "What does FOPL stand for?", opts: ["First Order Probability Logic", "First Order Predicate Logic", "Fuzzy Optimization Pattern Logic", "Forward Only Predicate Language"], a: 1, why: "First Order Predicate Logic uses quantifiers and predicates." },
+    { q: "Which is NOT a property of a search algorithm?", opts: ["Completeness", "Optimality", "Time complexity", "Compatibility"], a: 3, why: "The four standard properties are Completeness, Optimality, Time and Space complexity." },
+    { q: "Hill Climbing's biggest weakness is...", opts: ["Too slow", "Gets stuck in local optima", "Requires too much memory", "Not implementable"], a: 1, why: "Hill climbing easily gets trapped in local optima with no way to escape." },
+    { q: "Which year was ChatGPT released to the public?", opts: ["2018", "2020", "2022", "2023"], a: 2, why: "OpenAI released ChatGPT for public testing in 2022." }
+  ],
+  2: [
+    { q: "What does ANN stand for?", opts: ["Advanced Neural Node", "Artificial Neural Network", "Algorithmic Neural Network", "Augmented Node Network"], a: 1, why: "Artificial Neural Network, inspired by biological neurons." },
+    { q: "What are the three main layers of an ANN?", opts: ["Input, Process, Output", "Input, Hidden, Output", "Start, Middle, End", "Sensor, Memory, Action"], a: 1, why: "Standard ANN structure: Input then Hidden then Output layers." },
+    { q: "The McCulloch Pitts neuron was introduced in...", opts: ["1943", "1958", "1969", "1986"], a: 0, why: "The McCulloch Pitts model dates to 1943, the foundation of neural networks." },
+    { q: "What corresponds to a biological synapse in an ANN?", opts: ["Activation function", "Bias", "Weight", "Neuron"], a: 2, why: "Synapses correspond to weights, they determine signal strength." },
+    { q: "What is the typical training to testing data split?", opts: ["50:50", "70:30", "80:20", "90:10"], a: 2, why: "Standard practice is 80% training, 20% testing." },
+    { q: "Which learning rule states 'neurons that fire together, wire together'?", opts: ["Perceptron", "Hebbian", "Delta", "Reinforcement"], a: 1, why: "Hebbian learning increases weights between correlated neurons." },
+    { q: "Adaline's delta rule for weight update is:", opts: ["Δw = η · x", "Δw = η · (d−y) · x", "Δw = w + η", "Δw = (d−y)²"], a: 1, why: "Δwᵢ = η · (d − y) · xᵢ, the classic delta rule." },
+    { q: "Who developed the Hopfield network and in what year?", opts: ["Rosenblatt, 1958", "Hopfield, 1982", "Hinton, 1986", "Widrow, 1960"], a: 1, why: "John Hopfield introduced his network in 1982." },
+    { q: "Hopfield networks are primarily used for...", opts: ["Image generation", "Associative memory", "Speech synthesis", "Linear regression"], a: 1, why: "They store patterns and retrieve them from noisy or partial inputs." },
+    { q: "Why are activation functions needed in ANNs?", opts: ["To save memory", "To introduce non-linearity", "To slow down training", "To replace inputs"], a: 1, why: "Without non-linearity, an ANN cannot learn complex patterns." },
+    { q: "Which network type is best for image data?", opts: ["RNN", "Feedforward", "CNN", "Modular"], a: 2, why: "Convolutional Neural Networks excel at grid like (image) data." },
+    { q: "Which network type is best for sequential data like text?", opts: ["CNN", "RNN", "RBF", "Hopfield"], a: 1, why: "Recurrent Neural Networks have feedback loops for sequences." },
+    { q: "Backpropagation was popularized in 1986 by...", opts: ["Hopfield and Hinton", "Rumelhart, Hinton, and Williams", "McCarthy and Minsky", "Widrow and Hoff"], a: 1, why: "Their 1986 paper revived neural network research." },
+    { q: "Frank Rosenblatt introduced the Perceptron in...", opts: ["1943", "1958", "1969", "1982"], a: 1, why: "The Perceptron, the first trainable neural network, dates to 1958." },
+    { q: "Adaline was developed by...", opts: ["Hebb and McCulloch", "Widrow and Hoff", "Hinton and LeCun", "Hopfield and Tank"], a: 1, why: "Bernard Widrow and Marcian Hoff developed Adaline." },
+    { q: "A Perceptron can only solve...", opts: ["Non-linear problems", "Linearly separable problems", "Recurrent problems", "All problems"], a: 1, why: "Single layer perceptrons are limited to linearly separable cases." },
+    { q: "In Backpropagation, errors are propagated...", opts: ["Forward only", "Backward from output to input", "In a loop", "Randomly"], a: 1, why: "Error flows backward through the network to update weights." },
+    { q: "Which is NOT a common activation function?", opts: ["Sigmoid", "ReLU", "Tanh", "Hebbian"], a: 3, why: "Hebbian is a learning rule, not an activation function." }
+  ],
+  3: [
+    { q: "Who invented fuzzy logic?", opts: ["Mamdani", "Lotfi A. Zadeh", "Sugeno", "Takagi"], a: 1, why: "Lotfi A. Zadeh introduced fuzzy logic in 1965." },
+    { q: "In what year was fuzzy logic invented?", opts: ["1943", "1956", "1965", "1975"], a: 2, why: "Zadeh published the foundational paper on fuzzy sets in 1965." },
+    { q: "Membership values in a fuzzy set range from...", opts: ["0 to 100", "0 to 1", "−1 to 1", "Only 0 or 1"], a: 1, why: "Fuzzy membership is any real value between 0 and 1 inclusive." },
+    { q: "Fuzzy UNION is computed using...", opts: ["min(μA, μB)", "max(μA, μB)", "1 − μA", "μA × μB"], a: 1, why: "Union equals max of membership values." },
+    { q: "Fuzzy INTERSECTION is computed using...", opts: ["max(μA, μB)", "min(μA, μB)", "μA + μB", "1 − μA"], a: 1, why: "Intersection equals min of membership values." },
+    { q: "Fuzzy COMPLEMENT is given by...", opts: ["μA − 1", "1 − μA", "1 / μA", "max(μA, 0)"], a: 1, why: "Complement equals 1 minus the membership value." },
+    { q: "Mamdani FIS was proposed in...", opts: ["1965", "1975", "1980", "1986"], a: 1, why: "Ebrahim Mamdani proposed his FIS in 1975." },
+    { q: "Sugeno FIS was developed by...", opts: ["Zadeh", "Mamdani only", "Takagi, Sugeno, and Kang", "Hopfield"], a: 2, why: "TSK (Takagi, Sugeno, Kang) proposed it in the 1980s." },
+    { q: "Mamdani FIS outputs are...", opts: ["Crisp values directly", "Fuzzy sets (need defuzzification)", "Binary 0/1", "Probabilities"], a: 1, why: "Mamdani outputs fuzzy sets that must be defuzzified." },
+    { q: "Sugeno FIS outputs are...", opts: ["Fuzzy sets only", "Crisp values from math functions", "Linguistic terms", "Random values"], a: 1, why: "Sugeno produces crisp output via weighted average of functions." },
+    { q: "Which is the most common defuzzification method?", opts: ["Centroid", "Random pick", "Mean of zeros", "Logarithmic"], a: 0, why: "Centroid (center of mass) is the most widely used method." },
+    { q: "What is fuzzification?", opts: ["Converting fuzzy to crisp", "Converting crisp to fuzzy", "Creating rules", "Removing uncertainty"], a: 1, why: "Fuzzification turns crisp inputs into fuzzy membership values." },
+    { q: "What is defuzzification?", opts: ["Converting crisp to fuzzy", "Converting fuzzy output to crisp value", "Deleting rules", "Adding noise"], a: 1, why: "Defuzzification converts fuzzy inference output into a usable crisp value." },
+    { q: "Which is NOT a standard membership function shape?", opts: ["Triangular", "Trapezoidal", "Gaussian", "Hyperbolic spiral"], a: 3, why: "Standard shapes are Triangular, Trapezoidal, and Gaussian." },
+    { q: "Which is NOT a defuzzification method?", opts: ["Centroid", "Bisector of Area", "Mean of Maximum", "Backpropagation"], a: 3, why: "Backpropagation is a neural network training method, not defuzzification." },
+    { q: "The four steps of FLC in order are...", opts: ["Rules, Fuzzify, Defuzzify, Infer", "Fuzzify, Rule Base, Inference, Defuzzify", "Infer, Fuzzify, Rules, Output", "Defuzzify, Rules, Fuzzify, Infer"], a: 1, why: "Pipeline: Fuzzification then Rule Base then Inference then Defuzzification." },
+    { q: "Fuzzy logic is commonly used in...", opts: ["Washing machines and ACs", "Solving polynomial equations", "Cryptography only", "Compiling code"], a: 0, why: "Home appliances are a textbook application of fuzzy logic." },
+    { q: "Aggregation in fuzzy logic refers to...", opts: ["Building rules", "Combining outputs of multiple fuzzy rules", "Adding inputs", "Removing fuzziness"], a: 1, why: "Aggregation combines the results of all fired rules into one fuzzy output." }
+  ],
+  4: [
+    { q: "Genetic Algorithms are inspired by...", opts: ["Quantum mechanics", "Darwinian evolution", "Neural networks", "Fuzzy logic"], a: 1, why: "GAs simulate natural selection and evolution." },
+    { q: "What are the three core operators of a Genetic Algorithm?", opts: ["Add, Subtract, Multiply", "Selection, Crossover, Mutation", "Fuzzify, Infer, Defuzzify", "Forward, Back, Update"], a: 1, why: "Every GA uses these three operators in each generation." },
+    { q: "In a GA, a chromosome represents...", opts: ["A learning rate", "A single candidate solution", "An error value", "A neural layer"], a: 1, why: "A chromosome encodes one possible solution to the problem." },
+    { q: "What is the purpose of the fitness function in a GA?", opts: ["To mutate genes", "To score how good a chromosome is", "To create new chromosomes", "To select layers"], a: 1, why: "The fitness function ranks chromosomes by quality." },
+    { q: "Crossover in a GA does what?", opts: ["Randomly flips bits", "Combines genes from two parents", "Removes weak chromosomes", "Adds new genes from nowhere"], a: 1, why: "Crossover mixes genetic material from two parents to create offspring." },
+    { q: "Mutation in a GA serves to...", opts: ["Speed up training", "Maintain diversity and escape local optima", "Reduce population size", "Eliminate fitness"], a: 1, why: "Random mutations introduce diversity and help avoid getting stuck." },
+    { q: "Ant Colony Optimization is inspired by...", opts: ["Bird flocking", "Ant foraging behavior", "Fish schooling", "Bee dances"], a: 1, why: "ACO simulates how ants find shortest paths using pheromone trails." },
+    { q: "In ACO, what guides each ant's choice of path?", opts: ["A random number generator", "Pheromone concentration plus heuristic info", "Fitness score", "Gradient descent"], a: 1, why: "Ants choose probabilistically based on pheromone strength and heuristic information." },
+    { q: "Pheromone evaporation in ACO prevents...", opts: ["Memory leaks", "Getting stuck on suboptimal paths early", "Mutation", "Crossover"], a: 1, why: "Evaporation lets old pheromone trails fade so the colony can adapt." },
+    { q: "Which problem is ACO famously good at?", opts: ["Image recognition", "Travelling Salesman Problem", "Speech synthesis", "Linear regression"], a: 1, why: "ACO performs excellently on routing problems like TSP." },
+    { q: "A population in a GA refers to...", opts: ["One chromosome", "The full set of chromosomes in a generation", "The fitness function", "The mutation operator"], a: 1, why: "The population is the collection of all chromosomes being evolved." },
+    { q: "Both GA and ACO are examples of...", opts: ["Supervised learning", "Metaheuristic optimization", "Backpropagation", "Defuzzification"], a: 1, why: "Both are metaheuristics, high level strategies for hard optimization." },
+    { q: "ACO is a form of...", opts: ["Deep learning", "Swarm intelligence", "Fuzzy logic", "Expert system"], a: 1, why: "ACO is a classic swarm intelligence algorithm." },
+    { q: "What does 'generation' mean in a GA?", opts: ["A new chromosome", "One full evaluate, select, crossover, mutate cycle", "The fitness peak", "A type of mutation"], a: 1, why: "A generation is one complete evolutionary cycle producing the next population." },
+    { q: "Which is NOT a step in a Simple GA?", opts: ["Initial population", "Fitness evaluation", "Backpropagation", "Crossover"], a: 2, why: "Backpropagation is a neural network technique, not a GA step." },
+    { q: "In ACO, the path with the highest pheromone is typically...", opts: ["The longest", "The most expensive", "The shortest or most efficient", "Chosen randomly"], a: 2, why: "Shorter paths get traversed more often and accumulate more pheromone." }
+  ]
+};
+
+/* ==================== QUIZ ENGINE ==================== */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const quizState = { 1: {}, 2: {}, 3: {}, 4: {} };
+
+function renderQuiz(chapter) {
+  const pool = quizPools[chapter];
+  const picked = shuffle(pool).slice(0, 5).map(q => {
+    const optsWithIdx = q.opts.map((o, i) => ({ text: o, correct: i === q.a }));
+    const shuffledOpts = shuffle(optsWithIdx);
+    const newCorrectIdx = shuffledOpts.findIndex(o => o.correct);
+    return { q: q.q, opts: shuffledOpts.map(o => o.text), a: newCorrectIdx, why: q.why };
+  });
+  quizState[chapter] = { questions: picked, answers: {}, submitted: false };
+
+  const container = document.getElementById(`questions-${chapter}`);
+  const letters = ['A', 'B', 'C', 'D'];
+  container.innerHTML = picked.map((q, qi) => `
+    <div class="quiz-q" data-q="${qi}">
+      <div class="q-text"><span class="q-num">Q${qi + 1}.</span>${q.q}</div>
+      <div class="q-opts">
+        ${q.opts.map((opt, oi) => `
+          <button class="opt" data-q="${qi}" data-opt="${oi}">
+            <span class="opt-letter">${letters[oi]}</span>
+            <span>${opt}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="feedback" id="fb-${chapter}-${qi}"></div>
+    </div>
+  `).join('');
+
+  container.querySelectorAll('.opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (quizState[chapter].submitted) return;
+      const qi = +btn.dataset.q;
+      const oi = +btn.dataset.opt;
+      quizState[chapter].answers[qi] = oi;
+      container.querySelectorAll(`.opt[data-q="${qi}"]`).forEach(b => {
+        b.style.borderColor = '';
+        b.style.background = '';
+      });
+      btn.style.borderColor = 'var(--acc)';
+      btn.style.background = 'color-mix(in srgb, var(--acc) 14%, var(--bg-2))';
+      updateProgress(chapter);
+    });
+  });
+
+  document.getElementById(`score-${chapter}`).classList.remove('show');
+  document.getElementById(`progress-${chapter}`).textContent = '0 / 5';
+}
+
+function updateProgress(chapter) {
+  const answered = Object.keys(quizState[chapter].answers).length;
+  document.getElementById(`progress-${chapter}`).textContent = `${answered} / 5`;
+}
+
+function submitQuiz(chapter) {
+  const state = quizState[chapter];
+  if (state.submitted) return;
+  state.submitted = true;
+  let score = 0;
+  state.questions.forEach((q, qi) => {
+    const userAns = state.answers[qi];
+    const opts = document.querySelectorAll(`#questions-${chapter} .opt[data-q="${qi}"]`);
+    opts.forEach(b => {
+      b.disabled = true;
+      b.style.background = '';
+      b.style.borderColor = '';
+      const oi = +b.dataset.opt;
+      if (oi === q.a) b.classList.add('correct');
+      else if (oi === userAns) b.classList.add('wrong');
+    });
+    const fb = document.getElementById(`fb-${chapter}-${qi}`);
+    if (userAns === q.a) {
+      score++;
+      fb.innerHTML = `<strong style="color:var(--good);">✓ Correct.</strong> ${q.why}`;
+    } else if (userAns === undefined) {
+      fb.innerHTML = `<strong style="color:var(--ink-3);">○ Skipped.</strong> ${q.why}`;
+    } else {
+      fb.innerHTML = `<strong style="color:var(--bad);">✗ Not quite.</strong> ${q.why}`;
+    }
+    fb.classList.add('show');
+  });
+
+  const scoreEl = document.getElementById(`score-${chapter}`);
+  document.getElementById(`score-num-${chapter}`).textContent = `${score}/5`;
+  const msg = score === 5 ? "Perfect. You are exam ready." :
+              score === 4 ? "Strong. Review the one you missed and you are solid." :
+              score === 3 ? "Good base. Skim the explanations and try again." :
+              score === 2 ? "Keep going. Re-read the chapter and reshuffle." :
+              "Don't worry. Read the explanations and try again.";
+  document.getElementById(`score-msg-${chapter}`).textContent = msg;
+  scoreEl.classList.add('show');
+  scoreEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+[1, 2, 3, 4].forEach(ch => {
+  renderQuiz(ch);
+  document.getElementById(`submit-${ch}`).addEventListener('click', () => submitQuiz(ch));
+  document.getElementById(`reshuffle-${ch}`).addEventListener('click', () => renderQuiz(ch));
+});
+
+/* ==================== BACKGROUND CANVAS ==================== */
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let nodes = [];
+const palette = ['#6ee7ff', '#ff9ed8', '#ffb86b', '#9eff8c'];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  nodes = [];
+  const count = Math.min(70, Math.floor(window.innerWidth / 24));
+  for (let i = 0; i < count; i++) {
+    nodes.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r: Math.random() * 1.6 + 0.6,
+      c: palette[Math.floor(Math.random() * palette.length)]
+    });
+  }
+}
+window.addEventListener('resize', resize);
+resize();
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 140) {
+        const alpha = (1 - dist / 140) * 0.16;
+        ctx.strokeStyle = nodes[i].c;
+        ctx.globalAlpha = alpha;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  ctx.globalAlpha = 0.55;
+  nodes.forEach(n => {
+    n.x += n.vx;
+    n.y += n.vy;
+    if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+    if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+    ctx.fillStyle = n.c;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
